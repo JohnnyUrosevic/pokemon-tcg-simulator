@@ -1,8 +1,8 @@
-[gd_scene load_steps=33 format=3 uid="uid://rsro1f2ibpcd"]
+[gd_scene load_steps=35 format=3 uid="uid://rsro1f2ibpcd"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
-[ext_resource type="Script" path="res://Scenes/Main.gd" id="1_f3knx"]
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_jfj1k"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
 [ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
@@ -20,9 +20,18 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujk84"]
 no_depth_test = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spkdl"]
+transparency = 1
+no_depth_test = true
+albedo_color = Color(0, 0, 0, 0.494118)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7x2i"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egpop"]
 transparency = 1
-albedo_color = Color(0.745098, 0, 0.0627451, 0.603922)
+albedo_color = Color(0.745098, 0, 0.0627451, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82k0c"]
 albedo_texture = ExtResource("4_yq4pc")
@@ -108,7 +117,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_f3knx")
+script = ExtResource("1_jfj1k")
 
 [node name="UI_table" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
@@ -127,6 +136,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 text = "View Cards"
+icon_alignment = 2
+
+[node name="genDeck" type="Button" parent="UI_table"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1141.0
+offset_top = 73.0
+offset_right = -1004.0
+offset_bottom = 104.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+text = "Generate Deck"
 icon_alignment = 2
 
 [node name="UI_viewer" type="CanvasLayer" parent="."]
@@ -149,6 +174,8 @@ size_flags_stretch_ratio = 2.0
 text = "To Table"
 icon_alignment = 2
 
+[node name="setRequest" type="HTTPRequest" parent="."]
+
 [node name="cardRequest" type="HTTPRequest" parent="."]
 
 [node name="picRequest" type="HTTPRequest" parent="."]
@@ -168,12 +195,19 @@ mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ujk84")
 
+[node name="card2" type="MeshInstance3D" parent="3D_OBJECTS/viewer/card"]
+transform = Transform3D(1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 1.77636e-15, -3.55271e-15, 1, 0.360462, -0.315426, 0.294892)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_spkdl")
+
 [node name="table" type="Node3D" parent="3D_OBJECTS"]
 
 [node name="stadium" type="MeshInstance3D" parent="3D_OBJECTS/table"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -97.1958, 41.5702, -1.38043)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_i7x2i")
 
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
 
@@ -394,7 +428,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.349714, 0.2)
 mesh = ExtResource("11_wg00g")
 surface_material_override/0 = SubResource("StandardMaterial3D_f6y3l")
 
+[connection signal="button_up" from="UI_table/cardViewer" to="." method="_on_card_viewer_button_up"]
 [connection signal="pressed" from="UI_table/cardViewer" to="." method="_on_card_viewer_pressed"]
+[connection signal="pressed" from="UI_table/genDeck" to="." method="_on_gen_deck_pressed"]
 [connection signal="pressed" from="UI_viewer/table" to="." method="_on_table_pressed"]
+[connection signal="request_completed" from="setRequest" to="." method="_on_set_request_request_completed"]
 [connection signal="request_completed" from="cardRequest" to="." method="_on_card_request_request_completed"]
 [connection signal="request_completed" from="picRequest" to="." method="_on_pic_request_request_completed"]
