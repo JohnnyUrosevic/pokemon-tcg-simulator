@@ -1,0 +1,400 @@
+[gd_scene load_steps=33 format=3 uid="uid://rsro1f2ibpcd"]
+
+[ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
+[ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
+[ext_resource type="Script" path="res://Scenes/Main.gd" id="1_f3knx"]
+[ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
+[ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
+[ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
+[ext_resource type="Texture2D" uid="uid://cnvpdst4glksh" path="res://3Dmodels/Classroom/24063756_c.png" id="4_2an8l"]
+[ext_resource type="Texture2D" uid="uid://chn158y6nueb3" path="res://3Dmodels/Classroom/63101C9_c.png" id="4_yq4pc"]
+[ext_resource type="Texture2D" uid="uid://buyvnm76kjrfh" path="res://3Dmodels/Classroom/9C60A57_c.png" id="5_h5kxg"]
+[ext_resource type="Texture2D" uid="uid://c7s2cjwe6m8e4" path="res://3Dmodels/Classroom/4292326B_c.png" id="6_1dwac"]
+[ext_resource type="Texture2D" uid="uid://dnboscjkl7h04" path="res://3Dmodels/Classroom/5703268C_c.png" id="7_gbqnm"]
+[ext_resource type="Texture2D" uid="uid://duoj5rxehv6dv" path="res://3Dmodels/Classroom/57298C9C_c.png" id="8_y8ful"]
+[ext_resource type="Texture2D" uid="uid://cy2sr1c8pjr07" path="res://3Dmodels/Classroom/63101C9_edit.png" id="9_b38b4"]
+[ext_resource type="Texture2D" uid="uid://bs1c1kmybqrnl" path="res://3Dmodels/Classroom/23EEFD0F_edit.png" id="10_6114y"]
+[ext_resource type="ArrayMesh" uid="uid://cnsus7r2n550j" path="res://3Dmodels/plane.obj" id="11_wg00g"]
+[ext_resource type="Texture2D" uid="uid://brjhi8g521cg7" path="res://3Dmodels/Classroom/board.png" id="12_k2tnx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujk84"]
+no_depth_test = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egpop"]
+transparency = 1
+albedo_color = Color(0.745098, 0, 0.0627451, 0.603922)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82k0c"]
+albedo_texture = ExtResource("4_yq4pc")
+emission_enabled = true
+emission_energy_multiplier = 1.36
+emission_texture = ExtResource("4_yq4pc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71tko"]
+transparency = 1
+albedo_texture = ExtResource("2_vt1s7")
+grow = true
+grow_amount = 8.27
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o27rw"]
+transparency = 1
+albedo_texture = ExtResource("2_vt1s7")
+grow = true
+grow_amount = 1.798
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5xtfw"]
+transparency = 1
+depth_draw_mode = 2
+albedo_texture = ExtResource("2_vt1s7")
+grow = true
+grow_amount = 2.517
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xoe7q"]
+albedo_texture = ExtResource("3_yq4uy")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mqtr"]
+albedo_texture = ExtResource("4_2an8l")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yo800"]
+albedo_texture = ExtResource("5_h5kxg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fqxq8"]
+albedo_texture = ExtResource("6_1dwac")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3lmr2"]
+cull_mode = 2
+albedo_color = Color(0.407843, 0.407843, 0.407843, 1)
+albedo_texture = ExtResource("7_gbqnm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25wkv"]
+transparency = 4
+blend_mode = 1
+cull_mode = 2
+albedo_texture = ExtResource("8_y8ful")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x4uwc"]
+transparency = 1
+no_depth_test = true
+albedo_texture = ExtResource("9_b38b4")
+emission_enabled = true
+emission_energy_multiplier = 10.94
+emission_texture = ExtResource("9_b38b4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g3ok7"]
+transparency = 2
+alpha_scissor_threshold = 0.601
+alpha_antialiasing_mode = 2
+alpha_antialiasing_edge = 0.54
+cull_mode = 2
+depth_draw_mode = 2
+albedo_texture = ExtResource("10_6114y")
+albedo_texture_force_srgb = true
+uv1_offset = Vector3(1, 1, 1)
+grow = true
+grow_amount = 0.359
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7g0y"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("12_k2tnx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6y3l"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.396078)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_f3knx")
+
+[node name="UI_table" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="cardViewer" type="Button" parent="UI_table"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1141.0
+offset_top = 8.0
+offset_right = -1004.0
+offset_bottom = 39.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+text = "View Cards"
+icon_alignment = 2
+
+[node name="UI_viewer" type="CanvasLayer" parent="."]
+visible = false
+follow_viewport_enabled = true
+
+[node name="table" type="Button" parent="UI_viewer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1141.0
+offset_top = 8.0
+offset_right = -1004.0
+offset_bottom = 39.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+text = "To Table"
+icon_alignment = 2
+
+[node name="cardRequest" type="HTTPRequest" parent="."]
+
+[node name="picRequest" type="HTTPRequest" parent="."]
+
+[node name="3D_OBJECTS" type="Node3D" parent="."]
+
+[node name="viewer" type="Node3D" parent="3D_OBJECTS"]
+
+[node name="Camera3Dviewer" type="Camera3D" parent="3D_OBJECTS/viewer"]
+transform = Transform3D(0.895067, 0, -0.445932, 0, 1, 0, 0.445932, 0, 0.895067, -773.1, 78.402, -341.49)
+fov = 30.1
+
+[node name="card" type="MeshInstance3D" parent="3D_OBJECTS/viewer"]
+transform = Transform3D(35.7974, -17.8479, 7.80157e-07, 0, -1.74846e-06, -40, 17.8479, 35.7974, -1.56475e-06, -280.66, 100.326, -862.629)
+visible = false
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ujk84")
+
+[node name="table" type="Node3D" parent="3D_OBJECTS"]
+
+[node name="stadium" type="MeshInstance3D" parent="3D_OBJECTS/table"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -97.1958, 41.5702, -1.38043)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("")
+
+[node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
+
+[node name="deck" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 64.8483)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="trainer" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 95.1768, 41.5702, 53.5823)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="discard" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 136.928)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench1" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -89.1876, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench2" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -41.1143, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench3" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench4" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 54.8764, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench5" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 103.006, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 27.0331)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize2" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 93.4528)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize3" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 159.187)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize4" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 34.4562)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize5" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 100.876)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize6" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 166.61)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="Camera3Dp1" type="Camera3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 205.936, 320.544)
+environment = ExtResource("2_cukcg")
+current = true
+
+[node name="p2" type="Node3D" parent="3D_OBJECTS/table"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="deck" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 64.8483)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="trainer" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -95.5126, 41.5702, 49.3984)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="discard" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 136.928)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench1" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -89.1876, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench2" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -41.1143, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench3" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench4" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 54.8764, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="bench5" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 103.006, 41.5702, 144.127)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 27.0331)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize2" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 93.4528)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize3" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 159.187)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize4" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 34.4562)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize5" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 100.876)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize6" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 166.61)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="Camera3Dp2" type="Camera3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 205.936, 320.544)
+
+[node name="Classroom" type="MeshInstance3D" parent="3D_OBJECTS"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5908, -28.0623, -2.54083)
+mesh = ExtResource("1_0q5lh")
+surface_material_override/6 = SubResource("StandardMaterial3D_82k0c")
+surface_material_override/7 = SubResource("StandardMaterial3D_71tko")
+surface_material_override/8 = SubResource("StandardMaterial3D_o27rw")
+surface_material_override/9 = SubResource("StandardMaterial3D_5xtfw")
+surface_material_override/11 = SubResource("StandardMaterial3D_xoe7q")
+surface_material_override/12 = SubResource("StandardMaterial3D_3mqtr")
+surface_material_override/13 = SubResource("StandardMaterial3D_yo800")
+surface_material_override/14 = SubResource("StandardMaterial3D_fqxq8")
+surface_material_override/15 = SubResource("StandardMaterial3D_3lmr2")
+surface_material_override/16 = SubResource("StandardMaterial3D_25wkv")
+surface_material_override/17 = SubResource("StandardMaterial3D_x4uwc")
+surface_material_override/18 = SubResource("StandardMaterial3D_g3ok7")
+
+[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS"]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 40.5951, 0)
+mesh = ExtResource("11_wg00g")
+surface_material_override/0 = SubResource("StandardMaterial3D_d7g0y")
+
+[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS/Plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.349714, 0.2)
+mesh = ExtResource("11_wg00g")
+surface_material_override/0 = SubResource("StandardMaterial3D_f6y3l")
+
+[connection signal="pressed" from="UI_table/cardViewer" to="." method="_on_card_viewer_pressed"]
+[connection signal="pressed" from="UI_viewer/table" to="." method="_on_table_pressed"]
+[connection signal="request_completed" from="cardRequest" to="." method="_on_card_request_request_completed"]
+[connection signal="request_completed" from="picRequest" to="." method="_on_pic_request_request_completed"]

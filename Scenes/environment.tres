@@ -1,0 +1,17 @@
+[gd_resource type="Environment" format=3 uid="uid://chf2kw3vw684i"]
+
+[resource]
+ambient_light_source = 2
+ambient_light_color = Color(0.823529, 0.870588, 1, 0.839216)
+ambient_light_energy = 1.51
+tonemap_exposure = 0.66
+ssr_enabled = true
+ssao_enabled = true
+sdfgi_use_occlusion = true
+glow_normalized = true
+glow_intensity = 1.56
+glow_bloom = 0.52
+glow_blend_mode = 0
+glow_hdr_threshold = 0.38
+glow_hdr_scale = 2.76
+glow_hdr_luminance_cap = 12.19

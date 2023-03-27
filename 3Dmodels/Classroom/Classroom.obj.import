@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b4qq03lo0jrtw"
+path="res://.godot/imported/Classroom.obj-18b58fb02b65de43bb7e32015ebffa3d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Classroom.obj-18b58fb02b65de43bb7e32015ebffa3d.mesh"]
+
+source_file="res://3Dmodels/Classroom/Classroom.obj"
+dest_files=["res://.godot/imported/Classroom.obj-18b58fb02b65de43bb7e32015ebffa3d.mesh", "res://.godot/imported/Classroom.obj-18b58fb02b65de43bb7e32015ebffa3d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
