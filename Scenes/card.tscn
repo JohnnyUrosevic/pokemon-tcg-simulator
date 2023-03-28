@@ -10,7 +10,7 @@ albedo_texture = ExtResource("2_o5f43")
 [sub_resource type="BoxShape3D" id="BoxShape3D_s73ip"]
 size = Vector3(4.98, 0.05, 6.94)
 
-[node name="card" type="MeshInstance3D"]
+[node name="Card" type="MeshInstance3D"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0)
 mesh = ExtResource("1_j2ci3")
 skeleton = NodePath("../../..")
@@ -22,4 +22,10 @@ script = ExtResource("3_b2dor")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_s73ip")
 
+[node name="cardRequest" type="HTTPRequest" parent="."]
+
+[node name="picRequest" type="HTTPRequest" parent="."]
+
 [connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="request_completed" from="cardRequest" to="." method="_on_card_request_request_completed"]
+[connection signal="request_completed" from="picRequest" to="." method="_on_pic_request_request_completed"]

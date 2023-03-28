@@ -1,8 +1,8 @@
-[gd_scene load_steps=35 format=3 uid="uid://rsro1f2ibpcd"]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
-[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_jfj1k"]
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_s0iiu"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
 [ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
@@ -117,7 +117,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_jfj1k")
+script = ExtResource("1_s0iiu")
 
 [node name="UI_table" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
@@ -153,6 +153,12 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 text = "Generate Deck"
 icon_alignment = 2
+
+[node name="MenuButton" type="MenuButton" parent="UI_table"]
+offset_left = 553.0
+offset_top = 85.0
+offset_right = 803.0
+offset_bottom = 290.0
 
 [node name="UI_viewer" type="CanvasLayer" parent="."]
 visible = false
@@ -210,6 +216,9 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_i7x2i")
 
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
+
+[node name="hand" type="Node3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.8967, 222.571)
 
 [node name="deck" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 64.8483)
@@ -308,6 +317,9 @@ current = true
 
 [node name="p2" type="Node3D" parent="3D_OBJECTS/table"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="hand" type="Node3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.8967, 222.571)
 
 [node name="deck" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 64.8483)

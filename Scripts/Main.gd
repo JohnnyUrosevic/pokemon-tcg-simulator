@@ -12,6 +12,7 @@ var loadedCardDict = {}
 var loadedCardImage = Image.new()
 var searchTarget = "base1-4"
 var url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
+var json_mate = load("res://Scripts/json_mate.gd")
 
 var gameScope = "table"
 var playerSlot = "1"
@@ -44,6 +45,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 		return
 	var response = json.get_data()
 	loadedCardDict = response["data"]
+	json_mate.saveJSON(json,response["data"]["id"])
 	print("[GET CARD] Data Loaded")
 	$picRequest.request(loadedCardDict["images"]["large"])
 func _on_pic_request_request_completed(result, response_code, headers, body):
@@ -107,13 +109,18 @@ func generateDeck(cardList):
 		var thisCard = cardsInDeck[n]
 		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").remove_child(thisCard)
 		thisCard.queue_free()
+	var deckCount
 	for n in cardList.size():
 		card = preload("res://Scenes/card.tscn").instantiate()
 		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").add_child(card)
-		var deckCount = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count()
+		deckCount = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count()
 		card.scale = Vector3(1,1,1)
 		card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
 		card.id = cardList[n]
-		print(card.id)
-		
+		card.playerSlot = playerSlot
+		print(card.id+","+str(playerSlot))
+		card.initialize()
+	cardsInDeck.reverse()
+	for n in cardList.size():
+		card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
 	

@@ -15,6 +15,10 @@ run/main_scene="res://Scenes/class.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+JsonMate="*res://Scripts/json_mate.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"
