@@ -102,11 +102,18 @@ func loadRandomCardInViewer():
 func generateDeck(cardList):
 	var deckLocation = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").global_position
 	var card
-	for n in 60:
+	var cardsInDeck = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()
+	for n in get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count():
+		var thisCard = cardsInDeck[n]
+		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").remove_child(thisCard)
+		thisCard.queue_free()
+	for n in cardList.size():
 		card = preload("res://Scenes/card.tscn").instantiate()
 		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").add_child(card)
 		var deckCount = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count()
 		card.scale = Vector3(1,1,1)
 		card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
+		card.id = cardList[n]
+		print(card.id)
 		
 	
