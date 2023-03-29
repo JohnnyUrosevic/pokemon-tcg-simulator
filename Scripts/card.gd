@@ -23,11 +23,11 @@ func _ready():
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
 func initialize():
-	if(json_mate.jsonExists(id)==null):
+	if(!json_mate.jsonExists(id)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
 	else:
 		cardDict = json_mate.loadJSON(id)["data"]
-		if(png_mate.pngExists(id,"small")==null):
+		if(!png_mate.pngExists(id,"small")):
 			$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 		else:
 			cardImage = png_mate.loadPNG(id,"small")
@@ -73,7 +73,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 	cardDict = response["data"]
 	json_mate.saveJSON(response,id)
 	print("[GET CARD] Data Loaded")
-	if(png_mate.pngExists(id,"small")==null):
+	if(!png_mate.pngExists(id,"small")):
 		$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 	else:
 		cardImage = png_mate.loadPNG(id,"small")

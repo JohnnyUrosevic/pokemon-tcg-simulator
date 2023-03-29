@@ -48,7 +48,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 	loadedCardDict = response["data"]
 	json_mate.saveJSON(response,response["data"]["id"])
 	print("[GET CARD] Data Loaded")
-	if(png_mate.pngExists(searchTarget,"large")==null):
+	if(!png_mate.pngExists(searchTarget,"large")):
 		$picRequest.request(loadedCardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
 	else:
 		loadedCardImage = png_mate.loadPNG(searchTarget,"large")
@@ -94,17 +94,19 @@ func loadRandomCardInViewer():
 	get_node("3D_OBJECTS/viewer/card").set_surface_override_material(0,material)
 	var idInSet = rng.randi_range(1,102)
 	searchTarget = "base1-"+str(idInSet)
+	print (searchTarget)
 	url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
-	if(json_mate.jsonExists(searchTarget)==null):
+	if(!json_mate.jsonExists(searchTarget)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+searchTarget,['X-Api-Key: ' + API.KEY]);
 	else:
 		loadedCardDict = json_mate.loadJSON(searchTarget)["data"]
-		if(png_mate.pngExists(searchTarget,"large")==null):
+		if(!png_mate.pngExists(searchTarget,"large")):
 			$picRequest.request(loadedCardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
 			await requestComplete
+			print("[AWAIT FINISHED] requestCompleted")
 		else:
 			loadedCardImage = png_mate.loadPNG(searchTarget,"large")
-	print("[AWAIT FINISHED] requestCompleted")
+			print("[NO AWAIT] got pic info from cache")
 	texture = ImageTexture.create_from_image(loadedCardImage)
 	material = StandardMaterial3D.new()
 	material.set_texture(0,texture)

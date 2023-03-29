@@ -14,7 +14,7 @@ static func loadPNG(id, size):
 	if(size=="small"):
 		buffer = 400000
 	else:
-		buffer = 1000000
+		buffer = 1100000
 	var save_path = "res://pngData/"+id+"-"+size+"-"
 	if FileAccess.file_exists(save_path):
 		print("PNG found")
