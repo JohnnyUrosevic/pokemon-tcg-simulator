@@ -14,7 +14,10 @@ var searchTarget = "base1-4"
 var url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
-
+##################Statemachine#####################
+var draww = false
+var highlightedCard
+########################################################
 var gameScope = "table"
 var playerSlot = "1"
 var CARD_STACK_OFFSET = 0.35
@@ -140,4 +143,11 @@ func generateDeck(cardList):
 	cardsInDeck.reverse()
 	for n in cardsInDeck.size():
 		cardsInDeck[n].global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*(n),0)
+	#START GAME
+	await get_tree().create_timer(0.2).timeout
+	draw7()
+func draw7():
+	for n in 8:
+		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()[0].drawCardsFrom("deck")
+		await get_tree().create_timer(0.2).timeout
 	

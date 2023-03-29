@@ -13,6 +13,8 @@ var cardDict = {}
 var cardImage = Image.new()
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
+var hovering = false
+
 var cancelMove = false #set to true when card movement must be overwritten by a subsequent movement
 #######################
 #-INITIALIZATION-------
@@ -24,6 +26,10 @@ func _ready():
 	material.set_texture(0,texture)
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
+func _process(delta):
+	if get_node("/root/Control").highlightedCard != self && hovering:
+		hovering = false
+		alignHand()
 func initialize():
 	if(!json_mate.jsonExists(id)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
@@ -41,6 +47,9 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true and get_parent().name=="deck":
 			drawCardsFrom("deck")
+	if get_parent().name=="hand" && !hovering:
+		hoverHighlight()
+
 #######################
 #-CARD FUNCTIONS-------
 #######################
@@ -53,17 +62,26 @@ func updateTexture():
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
 func drawCardsFrom(container):
+	if get_node("/root/Control").draww:
+		return
+	get_node("/root/Control").draww  = true
 	var drawTarget = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/"+container)
 	var cardToDraw = drawTarget.get_children()[0]
 	if(cardToDraw.cardImage==Image.new()):
 		return
 	cardToDraw.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand"),true)
 	cardToDraw.updateTexture()
-	var hand = cardToDraw.get_parent()
-	for n in hand.get_child_count():
-		var targetLoc =  hand.global_position+Vector3(-8*hand.get_child_count(),0,0)+Vector3(n*16,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
-		hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2)
-func moveToLocation(obj, location, travelTime):
+	alignHand()
+	await get_tree().create_timer(.2).timeout
+	get_node("/root/Control").draww  = false
+func hoverHighlight():
+	if get_node("/root/Control").draww:
+		return
+	if !hovering:
+		moveToLocation(self,global_position+Vector3(0,0,-11),.2,false)
+	hovering = true
+	get_node("/root/Control").highlightedCard = self
+func moveToLocation(obj, location, travelTime, finish):
 	cancelMove = true
 	await obj.get_tree().create_timer(1/144).timeout
 	cancelMove = false
@@ -75,10 +93,16 @@ func moveToLocation(obj, location, travelTime):
 		distance = (location-obj.global_position).length()
 		obj.global_position += direction*(1.0/144)*ogDistance/travelTime
 		time+=1.0/144
-		print (str(time))
+		#print (str(time))
 		await obj.get_tree().create_timer(1/144).timeout
 	cancelMove = false
-	obj.global_position=location
+	if finish:
+		obj.global_position=location
+func alignHand():
+	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand")
+	for n in hand.get_child_count():
+		var targetLoc =  hand.global_position+Vector3(-12*hand.get_child_count(),0,0)+Vector3(n*24,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
+		hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2,false)
 #######################
 #-API CALLS------------
 #######################
