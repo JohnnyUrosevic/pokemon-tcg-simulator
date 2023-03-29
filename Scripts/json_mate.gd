@@ -12,7 +12,7 @@ static func saveJSON(json, id):
 static func loadJSON(id):
 	var save_path = "res://jsonData/"+id
 	if FileAccess.file_exists(save_path):
-		print("file found")
+		print("JSON found")
 		var file = FileAccess.open(save_path, FileAccess.READ)
 		var content = file.get_as_text()
 		
@@ -26,5 +26,13 @@ static func loadJSON(id):
 			return null
 	else:
 		print("file not found")
+		return null
+		
+static func jsonExists(id):
+	var save_path = "res://jsonData/"+id
+	if FileAccess.file_exists(save_path):
+		return true
+	else:
+		return false
 
 	

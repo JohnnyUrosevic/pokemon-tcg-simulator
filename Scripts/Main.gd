@@ -13,6 +13,7 @@ var loadedCardImage = Image.new()
 var searchTarget = "base1-4"
 var url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
 var json_mate = load("res://Scripts/json_mate.gd")
+var png_mate = load("res://Scripts/png_mate.gd")
 
 var gameScope = "table"
 var playerSlot = "1"
@@ -47,9 +48,13 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 	loadedCardDict = response["data"]
 	json_mate.saveJSON(response,response["data"]["id"])
 	print("[GET CARD] Data Loaded")
-	$picRequest.request(loadedCardDict["images"]["large"])
+	if(png_mate.pngExists(searchTarget,"large")==null):
+		$picRequest.request(loadedCardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
+	else:
+		loadedCardImage = png_mate.loadPNG(searchTarget,"large")
 func _on_pic_request_request_completed(result, response_code, headers, body):
 	var error = loadedCardImage.load_png_from_buffer(body)
+	png_mate.savePNG(loadedCardImage,searchTarget,"large")
 	print("[GET PIC] Data Loaded")
 	requestComplete.emit()
 	if error != OK:
@@ -90,12 +95,15 @@ func loadRandomCardInViewer():
 	var idInSet = rng.randi_range(1,102)
 	searchTarget = "base1-"+str(idInSet)
 	url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
-	if(json_mate.loadJSON(searchTarget)==null):
+	if(json_mate.jsonExists(searchTarget)==null):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+searchTarget,['X-Api-Key: ' + API.KEY]);
 	else:
-		json = json_mate.loadJSON(searchTarget)
-		$picRequest.request(json["data"]["images"]["large"],['X-Api-Key: ' + API.KEY])
-	await requestComplete
+		loadedCardDict = json_mate.loadJSON(searchTarget)["data"]
+		if(png_mate.pngExists(searchTarget,"large")==null):
+			$picRequest.request(loadedCardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
+			await requestComplete
+		else:
+			loadedCardImage = png_mate.loadPNG(searchTarget,"large")
 	print("[AWAIT FINISHED] requestCompleted")
 	texture = ImageTexture.create_from_image(loadedCardImage)
 	material = StandardMaterial3D.new()
@@ -109,22 +117,25 @@ func generateDeck(cardList):
 	var deckLocation = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").global_position
 	var card
 	var cardsInDeck = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()
+	#delete existsing
 	for n in get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count():
 		var thisCard = cardsInDeck[n]
 		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").remove_child(thisCard)
 		thisCard.queue_free()
 	var deckCount
+	#instantiate new
 	for n in cardList.size():
 		card = preload("res://Scenes/card.tscn").instantiate()
 		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").add_child(card)
 		deckCount = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count()
 		card.scale = Vector3(1,1,1)
-		card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
+		#card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
 		card.id = cardList[n]
 		card.playerSlot = playerSlot
 		print(card.id+","+str(playerSlot))
 		card.initialize()
+	cardsInDeck = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()
 	cardsInDeck.reverse()
-	for n in cardList.size():
-		card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
+	for n in cardsInDeck.size():
+		cardsInDeck[n].global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*(n),0)
 	

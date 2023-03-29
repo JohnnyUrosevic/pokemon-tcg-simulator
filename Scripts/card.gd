@@ -1,5 +1,7 @@
 extends MeshInstance3D
 
+signal done
+
 #######################
 #-VARIABLES------------
 #######################
@@ -8,8 +10,8 @@ var id = "null"
 var playerSlot = -1
 var cardDict = {}
 var cardImage = Image.new()
-var doneLoading = false
 var json_mate = load("res://Scripts/json_mate.gd")
+var png_mate = load("res://Scripts/png_mate.gd")
 #######################
 #-INITIALIZATION-------
 #######################
@@ -21,11 +23,14 @@ func _ready():
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
 func initialize():
-	if(json_mate.loadJSON(id)==null):
+	if(json_mate.jsonExists(id)==null):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
 	else:
-		json = json_mate.loadJSON(id)
-		$picRequest.request(json["data"]["images"]["small"],['X-Api-Key: ' + API.KEY])
+		cardDict = json_mate.loadJSON(id)["data"]
+		if(png_mate.pngExists(id,"small")==null):
+			$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
+		else:
+			cardImage = png_mate.loadPNG(id,"small")
 #######################
 #-CARD INTERFACING----
 #######################
@@ -38,8 +43,8 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 #-CARD FUNCTIONS-------
 #######################
 func updateTexture():
-	if get_parent().name!="hand"||!doneLoading:
-		return
+	if cardImage == Image.new():
+		await done
 	var texture = ImageTexture.create_from_image(cardImage)
 	var material = StandardMaterial3D.new()
 	material.set_texture(0,texture)
@@ -47,9 +52,11 @@ func updateTexture():
 	set_surface_override_material(0,material)
 func drawCardsFrom(container):
 	var drawTarget = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/"+container)
-	var cardToDraw = drawTarget.get_children()[drawTarget.get_child_count()-1]
+	var cardToDraw = drawTarget.get_children()[0]
+	if(cardToDraw.cardImage==Image.new()):
+		return
 	cardToDraw.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand"),true)
-	updateTexture()
+	cardToDraw.updateTexture()
 	var hand = cardToDraw.get_parent()
 	for n in hand.get_child_count():
 		hand.get_children()[n].global_position =  hand.global_position+Vector3(-8*hand.get_child_count(),0,0)+Vector3(n*16,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
@@ -66,12 +73,15 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 	cardDict = response["data"]
 	json_mate.saveJSON(response,id)
 	print("[GET CARD] Data Loaded")
-	$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
+	if(png_mate.pngExists(id,"small")==null):
+		$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
+	else:
+		cardImage = png_mate.loadPNG(id,"small")
 func _on_pic_request_request_completed(result, response_code, headers, body):
 	var error = cardImage.load_png_from_buffer(body)
+	png_mate.savePNG(cardImage,id,"small")
 	print("[GET PIC] Data Loaded")
-	doneLoading = true
-	updateTexture()
 	if error != OK:
 		print("An error occurred trying to get the card image.")
 		return
+	done.emit()

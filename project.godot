@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 JsonMate="*res://Scripts/json_mate.gd"
 API="*res://Scripts/api.gd"
+PngMate="*res://Scripts/png_mate.gd"
 
 [display]
 
