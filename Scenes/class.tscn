@@ -1,8 +1,9 @@
-[gd_scene load_steps=35 format=3 uid="uid://oc04smbxjuor"]
+[gd_scene load_steps=41 format=3 uid="uid://oc04smbxjuor"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_s0iiu"]
+[ext_resource type="Texture2D" uid="uid://hpp7dqbiid2t" path="res://Textures/sevsyxf2.bmp" id="2_2owcf"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
 [ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
@@ -16,6 +17,15 @@
 [ext_resource type="Texture2D" uid="uid://bs1c1kmybqrnl" path="res://3Dmodels/Classroom/23EEFD0F_edit.png" id="10_6114y"]
 [ext_resource type="ArrayMesh" uid="uid://cnsus7r2n550j" path="res://3Dmodels/plane.obj" id="11_wg00g"]
 [ext_resource type="Texture2D" uid="uid://brjhi8g521cg7" path="res://3Dmodels/Classroom/board.png" id="12_k2tnx"]
+[ext_resource type="Texture2D" uid="uid://bau2fj0mcbn0v" path="res://Textures/map_03-07-22_300dpi_17.32x13.20_INV3576c-scaled.png" id="17_gt87r"]
+[ext_resource type="Texture2D" uid="uid://di8r7pvw24rlx" path="res://Textures/8.30.2022_B5.jpg" id="18_orxst"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pti0s"]
+blend_mode = 2
+
+[sub_resource type="Theme" id="Theme_qhqhd"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7pds3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujk84"]
 no_depth_test = true
@@ -114,23 +124,82 @@ albedo_color = Color(0, 0, 0, 0.396078)
 
 [node name="Control" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -904.0
+offset_top = -534.0
+offset_right = -864.0
+offset_bottom = -494.0
+grow_horizontal = 0
+grow_vertical = 0
 script = ExtResource("1_s0iiu")
+
+[node name="UI_map" type="CanvasLayer" parent="."]
+visible = false
+follow_viewport_enabled = true
+
+[node name="close" type="Button" parent="UI_map"]
+texture_filter = 1
+texture_repeat = 2
+material = SubResource("CanvasItemMaterial_pti0s")
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1117.0
+offset_top = -638.0
+offset_right = -1003.0
+offset_bottom = -607.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = SubResource("Theme_qhqhd")
+text = "Close Map"
+icon = SubResource("ViewportTexture_7pds3")
+flat = true
+text_overrun_behavior = 2
+icon_alignment = 2
+
+[node name="Sevsyxf2" type="Sprite2D" parent="UI_map/close"]
+texture_filter = 2
+texture_repeat = 1
+position = Vector2(56, 15.5928)
+scale = Vector2(0.136043, 0.139175)
+texture = ExtResource("2_2owcf")
+
+[node name="Map03-07-22300Dpi1732x1320Inv3576c-scaled" type="Sprite2D" parent="UI_map"]
+position = Vector2(723.559, 326.063)
+scale = Vector2(0.334123, 0.334124)
+texture = ExtResource("17_gt87r")
+
+[node name="8302022B5" type="Sprite2D" parent="UI_map"]
+z_index = -1
+position = Vector2(150, 323.5)
+scale = Vector2(0.81125, 0.81125)
+texture = ExtResource("18_orxst")
 
 [node name="UI_table" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
 [node name="cardViewer" type="Button" parent="UI_table"]
-anchors_preset = 1
+anchors_preset = 3
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-offset_left = -1141.0
-offset_top = 8.0
-offset_right = -1004.0
-offset_bottom = 39.0
+anchor_bottom = 1.0
+offset_left = -282.0
+offset_top = -76.0
+offset_right = -145.0
+offset_bottom = -45.0
 grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(2, 2)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -139,26 +208,23 @@ text = "View Cards"
 icon_alignment = 2
 
 [node name="genDeck" type="Button" parent="UI_table"]
-anchors_preset = 1
+anchors_preset = 3
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-offset_left = -1141.0
-offset_top = 73.0
-offset_right = -1004.0
-offset_bottom = 104.0
+anchor_bottom = 1.0
+offset_left = -281.0
+offset_top = -147.0
+offset_right = -144.0
+offset_bottom = -116.0
 grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(2, 2)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 text = "Generate Deck"
 icon_alignment = 2
-
-[node name="MenuButton" type="MenuButton" parent="UI_table"]
-offset_left = 553.0
-offset_top = 85.0
-offset_right = 803.0
-offset_bottom = 290.0
 
 [node name="UI_viewer" type="CanvasLayer" parent="."]
 visible = false
