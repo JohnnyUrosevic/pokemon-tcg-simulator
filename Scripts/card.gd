@@ -22,10 +22,10 @@ func _ready():
 	set_surface_override_material(0,material)
 func initialize():
 	if(json_mate.loadJSON(id)==null):
-		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: fc35040f-7a88-4618-8644-351066fb1a10 ']);
+		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
 	else:
 		json = json_mate.loadJSON(id)
-		$picRequest.request(json.get_data()["data"]["images"]["small"],['X-Api-Key: fc35040f-7a88-4618-8644-351066fb1a10 '])
+		$picRequest.request(json.get_data()["data"]["images"]["small"],['X-Api-Key: ' + API.KEY])
 #######################
 #-CARD INTERFACING----
 #######################
@@ -66,7 +66,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 	var response = json.get_data()
 	cardDict = response["data"]
 	print("[GET CARD] Data Loaded")
-	$picRequest.request(cardDict["images"]["small"],['X-Api-Key: fc35040f-7a88-4618-8644-351066fb1a10 '])
+	$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 func _on_pic_request_request_completed(result, response_code, headers, body):
 	var error = cardImage.load_png_from_buffer(body)
 	print("[GET PIC] Data Loaded")
