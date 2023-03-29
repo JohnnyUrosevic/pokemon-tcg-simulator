@@ -45,7 +45,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 		return
 	var response = json.get_data()
 	loadedCardDict = response["data"]
-	json_mate.saveJSON(json,response["data"]["id"])
+	json_mate.saveJSON(response,response["data"]["id"])
 	print("[GET CARD] Data Loaded")
 	$picRequest.request(loadedCardDict["images"]["large"])
 func _on_pic_request_request_completed(result, response_code, headers, body):

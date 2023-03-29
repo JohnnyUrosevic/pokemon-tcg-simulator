@@ -58,13 +58,13 @@ func drawCardsFrom(container):
 #######################
 func _on_card_request_request_completed(result, response_code, headers, body):
 	var error = json.parse(body.get_string_from_utf8())
-	json_mate.saveJSON(json,id)
 	if error != OK:
 		print("An error occurred trying to get the card.")
 		print(error)
 		return
 	var response = json.get_data()
 	cardDict = response["data"]
+	json_mate.saveJSON(response,id)
 	print("[GET CARD] Data Loaded")
 	$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 func _on_pic_request_request_completed(result, response_code, headers, body):
