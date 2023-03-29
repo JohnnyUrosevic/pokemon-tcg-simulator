@@ -90,7 +90,11 @@ func loadRandomCardInViewer():
 	var idInSet = rng.randi_range(1,102)
 	searchTarget = "base1-"+str(idInSet)
 	url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
-	$cardRequest.request(url)
+	if(json_mate.loadJSON(searchTarget)==null):
+		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+searchTarget,['X-Api-Key: ' + API.KEY]);
+	else:
+		json = json_mate.loadJSON(searchTarget)
+		$picRequest.request(json["data"]["images"]["large"],['X-Api-Key: ' + API.KEY])
 	await requestComplete
 	print("[AWAIT FINISHED] requestCompleted")
 	texture = ImageTexture.create_from_image(loadedCardImage)

@@ -25,7 +25,7 @@ func initialize():
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
 	else:
 		json = json_mate.loadJSON(id)
-		$picRequest.request(json.get_data()["data"]["images"]["small"],['X-Api-Key: ' + API.KEY])
+		$picRequest.request(json["data"]["images"]["small"],['X-Api-Key: ' + API.KEY])
 #######################
 #-CARD INTERFACING----
 #######################
@@ -70,8 +70,8 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 func _on_pic_request_request_completed(result, response_code, headers, body):
 	var error = cardImage.load_png_from_buffer(body)
 	print("[GET PIC] Data Loaded")
+	doneLoading = true
 	updateTexture()
 	if error != OK:
 		print("An error occurred trying to get the card image.")
 		return
-	doneLoading = true
