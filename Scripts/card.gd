@@ -2,6 +2,7 @@ extends MeshInstance3D
 
 signal done
 
+
 #######################
 #-VARIABLES------------
 #######################
@@ -12,6 +13,7 @@ var cardDict = {}
 var cardImage = Image.new()
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
+var cancelMove = false #set to true when card movement must be overwritten by a subsequent movement
 #######################
 #-INITIALIZATION-------
 #######################
@@ -59,7 +61,24 @@ func drawCardsFrom(container):
 	cardToDraw.updateTexture()
 	var hand = cardToDraw.get_parent()
 	for n in hand.get_child_count():
-		hand.get_children()[n].global_position =  hand.global_position+Vector3(-8*hand.get_child_count(),0,0)+Vector3(n*16,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
+		var targetLoc =  hand.global_position+Vector3(-8*hand.get_child_count(),0,0)+Vector3(n*16,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
+		hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2)
+func moveToLocation(obj, location, travelTime):
+	cancelMove = true
+	await obj.get_tree().create_timer(1/144).timeout
+	cancelMove = false
+	var distance = (location-obj.global_position).length()
+	var ogDistance = distance
+	var direction = (location-obj.global_position).normalized()
+	var time = 0
+	while time < travelTime && !cancelMove:
+		distance = (location-obj.global_position).length()
+		obj.global_position += direction*(1.0/144)*ogDistance/travelTime
+		time+=1.0/144
+		print (str(time))
+		await obj.get_tree().create_timer(1/144).timeout
+	cancelMove = false
+	obj.global_position=location
 #######################
 #-API CALLS------------
 #######################
