@@ -101,7 +101,7 @@ func moveToLocation(obj, location, travelTime, finish):
 func alignHand():
 	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand")
 	for n in hand.get_child_count():
-		var targetLoc =  hand.global_position+Vector3(-12*hand.get_child_count(),0,0)+Vector3(n*24,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(8,0,0)
+		var targetLoc =  hand.global_position+Vector3(-18*hand.get_child_count(),0,0)+Vector3(n*36,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(18,0,0)
 		hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2,false)
 #######################
 #-API CALLS------------

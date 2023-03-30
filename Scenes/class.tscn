@@ -1,18 +1,23 @@
-[gd_scene load_steps=41 format=3 uid="uid://oc04smbxjuor"]
+[gd_scene load_steps=47 format=3 uid="uid://oc04smbxjuor"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_s0iiu"]
 [ext_resource type="Texture2D" uid="uid://hpp7dqbiid2t" path="res://Textures/sevsyxf2.bmp" id="2_2owcf"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
+[ext_resource type="Script" path="res://Scenes/turn_system.gd" id="2_ty0b5"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
 [ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
 [ext_resource type="Texture2D" uid="uid://cnvpdst4glksh" path="res://3Dmodels/Classroom/24063756_c.png" id="4_2an8l"]
 [ext_resource type="Texture2D" uid="uid://chn158y6nueb3" path="res://3Dmodels/Classroom/63101C9_c.png" id="4_yq4pc"]
 [ext_resource type="Texture2D" uid="uid://buyvnm76kjrfh" path="res://3Dmodels/Classroom/9C60A57_c.png" id="5_h5kxg"]
 [ext_resource type="Texture2D" uid="uid://c7s2cjwe6m8e4" path="res://3Dmodels/Classroom/4292326B_c.png" id="6_1dwac"]
+[ext_resource type="Texture2D" uid="uid://dcss18pifje7m" path="res://Textures/bar.png" id="6_7naak"]
 [ext_resource type="Texture2D" uid="uid://dnboscjkl7h04" path="res://3Dmodels/Classroom/5703268C_c.png" id="7_gbqnm"]
+[ext_resource type="Texture2D" uid="uid://q7b3rdxpeerd" path="res://Textures/faces/birdTamer2.png" id="7_j7wd3"]
+[ext_resource type="Texture2D" uid="uid://qvle7mwjdk0p" path="res://Textures/faces/lass2.png" id="8_i4vvq"]
 [ext_resource type="Texture2D" uid="uid://duoj5rxehv6dv" path="res://3Dmodels/Classroom/57298C9C_c.png" id="8_y8ful"]
+[ext_resource type="FontFile" uid="uid://7h10iawuwiii" path="res://Textures/Ubuntu-Bold.ttf" id="9_6rsux"]
 [ext_resource type="Texture2D" uid="uid://cy2sr1c8pjr07" path="res://3Dmodels/Classroom/63101C9_edit.png" id="9_b38b4"]
 [ext_resource type="Texture2D" uid="uid://bs1c1kmybqrnl" path="res://3Dmodels/Classroom/23EEFD0F_edit.png" id="10_6114y"]
 [ext_resource type="ArrayMesh" uid="uid://cnsus7r2n550j" path="res://3Dmodels/plane.obj" id="11_wg00g"]
@@ -26,6 +31,10 @@ blend_mode = 2
 [sub_resource type="Theme" id="Theme_qhqhd"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7pds3"]
+
+[sub_resource type="Theme" id="Theme_dy0ak"]
+default_font = ExtResource("9_6rsux")
+default_font_size = 88
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujk84"]
 no_depth_test = true
@@ -137,6 +146,12 @@ grow_horizontal = 0
 grow_vertical = 0
 script = ExtResource("1_s0iiu")
 
+[node name="TurnSystem" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_ty0b5")
+
 [node name="UI_map" type="CanvasLayer" parent="."]
 visible = false
 follow_viewport_enabled = true
@@ -189,6 +204,7 @@ texture = ExtResource("18_orxst")
 follow_viewport_enabled = true
 
 [node name="cardViewer" type="Button" parent="UI_table"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -208,6 +224,7 @@ text = "View Cards"
 icon_alignment = 2
 
 [node name="genDeck" type="Button" parent="UI_table"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -225,6 +242,41 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 text = "Generate Deck"
 icon_alignment = 2
+
+[node name="Bar" type="Sprite2D" parent="UI_table"]
+position = Vector2(480, -6)
+scale = Vector2(0.6, 0.5)
+texture = ExtResource("6_7naak")
+
+[node name="p1Face" type="Sprite2D" parent="UI_table"]
+position = Vector2(320, 70)
+scale = Vector2(-0.5, 0.5)
+texture = ExtResource("7_j7wd3")
+
+[node name="p2Face" type="Sprite2D" parent="UI_table"]
+position = Vector2(640, 70)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_i4vvq")
+
+[node name="turnLabel" type="RichTextLabel" parent="UI_table"]
+offset_left = 390.0
+offset_top = 45.0
+offset_right = 695.0
+offset_bottom = 131.0
+scale = Vector2(0.4, 0.8)
+theme = SubResource("Theme_dy0ak")
+text = "TURN :"
+scroll_active = false
+
+[node name="turnLabel2" type="RichTextLabel" parent="UI_table"]
+offset_left = 512.0
+offset_top = 45.0
+offset_right = 817.0
+offset_bottom = 131.0
+scale = Vector2(0.4, 0.8)
+theme = SubResource("Theme_dy0ak")
+text = "001"
+scroll_active = false
 
 [node name="UI_viewer" type="CanvasLayer" parent="."]
 visible = false
