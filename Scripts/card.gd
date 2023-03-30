@@ -29,7 +29,7 @@ func _ready():
 func _process(delta):
 	if get_node("/root/Control").highlightedCard != self && hovering:
 		hovering = false
-		alignHand()
+		get_node("/root/Control/TurnSystem").alignHand(1)
 func initialize():
 	if(!json_mate.jsonExists(id)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
@@ -46,7 +46,7 @@ func initialize():
 func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true and get_parent().name=="deck":
-			drawCardsFrom("deck")
+			get_node("root/Control/TurnSystem").drawCardsFrom("deck")
 	if get_parent().name=="hand" && !hovering:
 		hoverHighlight()
 
@@ -61,19 +61,6 @@ func updateTexture():
 	material.set_texture(0,texture)
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
-func drawCardsFrom(container):
-	if get_node("/root/Control").draww:
-		return
-	get_node("/root/Control").draww  = true
-	var drawTarget = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/"+container)
-	var cardToDraw = drawTarget.get_children()[0]
-	if(cardToDraw.cardImage==Image.new()):
-		return
-	cardToDraw.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand"),true)
-	cardToDraw.updateTexture()
-	alignHand()
-	await get_tree().create_timer(.2).timeout
-	get_node("/root/Control").draww  = false
 func hoverHighlight():
 	if get_node("/root/Control").draww:
 		return
@@ -98,11 +85,6 @@ func moveToLocation(obj, location, travelTime, finish):
 	cancelMove = false
 	if finish:
 		obj.global_position=location
-func alignHand():
-	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+playerSlot+"/hand")
-	for n in hand.get_child_count():
-		var targetLoc =  hand.global_position+Vector3(-18*hand.get_child_count(),0,0)+Vector3(n*36,get_node("/root/Control").CARD_STACK_OFFSET*n,0)+Vector3(18,0,0)
-		hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2,false)
 #######################
 #-API CALLS------------
 #######################

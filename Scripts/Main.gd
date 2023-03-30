@@ -85,7 +85,7 @@ func _on_gen_deck_pressed():
 	var cardList = []
 	for n in 60:
 		cardList.append("base1-"+str(rng.randi_range(1,102)))
-	generateDeck(cardList)
+	generateDeck(cardList,playerSlot)
 #######################
 #-CARD VIEWER----------
 #######################
@@ -118,10 +118,10 @@ func loadRandomCardInViewer():
 #######################
 #-GAME FUNCTIONS-------
 #######################
-func generateDeck(cardList):
-	var deckLocation = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").global_position
+func generateDeck(cardList,thisPlayerSlot):
+	var deckLocation = get_node("3D_OBJECTS/table/p"+str(thisPlayerSlot)+"/deck").global_position
 	var card
-	var cardsInDeck = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()
+	var cardsInDeck = get_node("3D_OBJECTS/table/p"+str(thisPlayerSlot)+"/deck").get_children()
 	#delete existsing
 	for n in get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count():
 		var thisCard = cardsInDeck[n]
@@ -145,9 +145,9 @@ func generateDeck(cardList):
 		cardsInDeck[n].global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*(n),0)
 	#START GAME
 	await get_tree().create_timer(0.2).timeout
-	draw7()
-func draw7():
+	draw7(1)
+func draw7(playerSlot):
 	for n in 8:
-		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()[0].drawCardsFrom("deck")
+		$TurnSystem.drawCardsFrom("deck",playerSlot)
 		await get_tree().create_timer(0.2).timeout
 	
