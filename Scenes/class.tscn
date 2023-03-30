@@ -1,11 +1,11 @@
-[gd_scene load_steps=47 format=3 uid="uid://oc04smbxjuor"]
+[gd_scene load_steps=47 format=3 uid="uid://38apenipdphh"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_s0iiu"]
 [ext_resource type="Texture2D" uid="uid://hpp7dqbiid2t" path="res://Textures/sevsyxf2.bmp" id="2_2owcf"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
-[ext_resource type="Script" path="res://Scenes/turn_system.gd" id="2_ty0b5"]
+[ext_resource type="Script" path="res://Scripts/turn_system.gd" id="2_kmohx"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
 [ext_resource type="Texture2D" uid="uid://f7s65qayl4qc" path="res://3Dmodels/Classroom/75ADD328_c.png" id="3_yq4uy"]
 [ext_resource type="Texture2D" uid="uid://cnvpdst4glksh" path="res://3Dmodels/Classroom/24063756_c.png" id="4_2an8l"]
@@ -150,7 +150,7 @@ script = ExtResource("1_s0iiu")
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_ty0b5")
+script = ExtResource("2_kmohx")
 
 [node name="UI_map" type="CanvasLayer" parent="."]
 visible = false
