@@ -54,6 +54,7 @@ func initialize():
 #######################
 #Handles clicking on cards
 func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
+	print(name)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true and get_parent().name=="hand" && get_node("/root/Control/TurnSystem").canSelect:
 			#get_node("/root/Control/TurnSystem").drawCardsFrom("deck",1)
@@ -70,7 +71,7 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 		if(get_node("/root/Control/TurnSystem").lastHover==self):
 			return
 		get_node("/root/Control/UI_table/info").texture = bigTexture
-	get_node("/root/Control/TurnSystem").lastHover = self
+		get_node("/root/Control/TurnSystem").lastHover = self
 
 #######################
 #-CARD FUNCTIONS-------

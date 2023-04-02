@@ -143,9 +143,8 @@ func pickBasicPokemon(playerSlot):
 			benchFree = designated.get_children()[0].goBench(playerSlot)
 			if !benchFree:
 				break
-	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/hand")
-	for n in hand.get_child_count():
-		undesignateCard(hand.get_children()[0],playerSlot)
+	for n in designated.get_child_count():
+		undesignateCard(designated.get_children()[0],playerSlot)
 	
 func normalMulligan(playerSlot): #called when no basic pokemon are drawn and hand must be redrawn
 	mulligansTaken+=1
@@ -197,7 +196,7 @@ func alignDeck(playerSlot):
 func alignPokemon(container,playerSlot):
 	var alignTarget = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/"+container)
 	for n in alignTarget.get_child_count():
-		var targetLoc =  alignTarget.position+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*(n),0)
+		var targetLoc =  alignTarget.global_position+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*(5+n*5),0)
 		if n!=alignTarget.get_child_count()-1:
 			alignTarget.get_children()[n].moveToLocation(alignTarget.get_children()[n],targetLoc,.2,false)
 		else:

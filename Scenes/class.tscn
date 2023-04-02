@@ -414,9 +414,6 @@ frustum_offset = Vector2(-0.01, 0)
 near = 0.045
 far = 2672.98
 
-[node name="SubViewport" type="SubViewport" parent="3D_OBJECTS"]
-size = Vector2i(5760, 3240)
-
 [node name="viewer" type="Node3D" parent="3D_OBJECTS"]
 
 [node name="Camera3Dviewer" type="Camera3D" parent="3D_OBJECTS/viewer"]
