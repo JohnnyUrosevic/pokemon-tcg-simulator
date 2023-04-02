@@ -54,7 +54,6 @@ func initialize():
 #######################
 #Handles clicking on cards
 func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
-	print(name)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true and get_parent().name=="hand" && get_node("/root/Control/TurnSystem").canSelect:
 			#get_node("/root/Control/TurnSystem").drawCardsFrom("deck",1)
@@ -65,13 +64,17 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 			#get_node("/root/Control/TurnSystem").drawCardsFrom("deck",1)
 			get_node("/root/Control/TurnSystem").undesignateCard(self,1)
 			await get_node("/root/Control/TurnSystem").alignDesignated(1)
-	elif get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect:
+	if get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect:
 		hoverHighlight()
+func _on_area_3d_mouse_entered():
+	print(name)
 	if get_parent().name!="deck":
 		if(get_node("/root/Control/TurnSystem").lastHover==self):
 			return
 		get_node("/root/Control/UI_table/info").texture = bigTexture
 		get_node("/root/Control/TurnSystem").lastHover = self
+func _on_area_3d_mouse_exited():
+	get_node("/root/Control").highlightedCard = null
 
 #######################
 #-CARD FUNCTIONS-------

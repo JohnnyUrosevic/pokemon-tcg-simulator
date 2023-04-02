@@ -22,7 +22,6 @@ script = ExtResource("3_b2dor")
 priority = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00623682, 0)
 shape = SubResource("BoxShape3D_s73ip")
 
 [node name="cardRequest" type="HTTPRequest" parent="."]
@@ -32,6 +31,8 @@ shape = SubResource("BoxShape3D_s73ip")
 [node name="picRequest2" type="HTTPRequest" parent="."]
 
 [connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
 [connection signal="request_completed" from="cardRequest" to="." method="_on_card_request_request_completed"]
 [connection signal="request_completed" from="picRequest" to="." method="_on_pic_request_request_completed"]
 [connection signal="request_completed" from="picRequest2" to="." method="_on_pic_request_2_request_completed"]
