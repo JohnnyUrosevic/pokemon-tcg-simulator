@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://38apenipdphh"]
+[gd_scene load_steps=49 format=3 uid="uid://38apenipdphh"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
@@ -12,14 +12,16 @@
 [ext_resource type="Texture2D" uid="uid://chn158y6nueb3" path="res://3Dmodels/Classroom/63101C9_c.png" id="4_yq4pc"]
 [ext_resource type="Texture2D" uid="uid://buyvnm76kjrfh" path="res://3Dmodels/Classroom/9C60A57_c.png" id="5_h5kxg"]
 [ext_resource type="Texture2D" uid="uid://c7s2cjwe6m8e4" path="res://3Dmodels/Classroom/4292326B_c.png" id="6_1dwac"]
-[ext_resource type="Texture2D" uid="uid://dcss18pifje7m" path="res://Textures/bar.png" id="6_7naak"]
+[ext_resource type="Theme" uid="uid://blk8n50qhm4w5" path="res://Textures/textstyle.tres" id="6_oks16"]
+[ext_resource type="Texture2D" uid="uid://j0ldm6120mio" path="res://Textures/smallerBack.png" id="6_ox876"]
+[ext_resource type="Texture2D" uid="uid://cxf71b0yncu46" path="res://Textures/ぼｒでｒｓ.png" id="6_snf7w"]
 [ext_resource type="Texture2D" uid="uid://dnboscjkl7h04" path="res://3Dmodels/Classroom/5703268C_c.png" id="7_gbqnm"]
 [ext_resource type="Texture2D" uid="uid://q7b3rdxpeerd" path="res://Textures/faces/birdTamer2.png" id="7_j7wd3"]
 [ext_resource type="Texture2D" uid="uid://qvle7mwjdk0p" path="res://Textures/faces/lass2.png" id="8_i4vvq"]
 [ext_resource type="Texture2D" uid="uid://duoj5rxehv6dv" path="res://3Dmodels/Classroom/57298C9C_c.png" id="8_y8ful"]
-[ext_resource type="FontFile" uid="uid://7h10iawuwiii" path="res://Textures/Ubuntu-Bold.ttf" id="9_6rsux"]
 [ext_resource type="Texture2D" uid="uid://cy2sr1c8pjr07" path="res://3Dmodels/Classroom/63101C9_edit.png" id="9_b38b4"]
 [ext_resource type="Texture2D" uid="uid://bs1c1kmybqrnl" path="res://3Dmodels/Classroom/23EEFD0F_edit.png" id="10_6114y"]
+[ext_resource type="Texture2D" uid="uid://dxv4pa3toypi8" path="res://Textures/messageBar.png" id="10_p0dyy"]
 [ext_resource type="ArrayMesh" uid="uid://cnsus7r2n550j" path="res://3Dmodels/plane.obj" id="11_wg00g"]
 [ext_resource type="Texture2D" uid="uid://brjhi8g521cg7" path="res://3Dmodels/Classroom/board.png" id="12_k2tnx"]
 [ext_resource type="Texture2D" uid="uid://bau2fj0mcbn0v" path="res://Textures/map_03-07-22_300dpi_17.32x13.20_INV3576c-scaled.png" id="17_gt87r"]
@@ -32,9 +34,10 @@ blend_mode = 2
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7pds3"]
 
-[sub_resource type="Theme" id="Theme_dy0ak"]
-default_font = ExtResource("9_6rsux")
-default_font_size = 88
+[sub_resource type="ViewportTexture" id="ViewportTexture_tbta4"]
+viewport_path = NodePath("3D_OBJECTS/table/p1/SubViewport")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_3phe6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujk84"]
 no_depth_test = true
@@ -44,13 +47,19 @@ transparency = 1
 no_depth_test = true
 albedo_color = Color(0, 0, 0, 0.494118)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7x2i"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egpop"]
 transparency = 1
 albedo_color = Color(0.745098, 0, 0.0627451, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7g0y"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("12_k2tnx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6y3l"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.396078)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82k0c"]
 albedo_texture = ExtResource("4_yq4pc")
@@ -120,16 +129,6 @@ albedo_texture_force_srgb = true
 uv1_offset = Vector3(1, 1, 1)
 grow = true
 grow_amount = 0.359
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7g0y"]
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-albedo_texture = ExtResource("12_k2tnx")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6y3l"]
-transparency = 1
-albedo_color = Color(0, 0, 0, 0.396078)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -203,6 +202,69 @@ texture = ExtResource("18_orxst")
 [node name="UI_table" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
+[node name="BG" type="Sprite2D" parent="UI_table"]
+visible = false
+light_mask = 2
+visibility_layer = 2
+texture_filter = 2
+position = Vector2(595, 327.48)
+scale = Vector2(0.208574, 0.208574)
+texture = SubResource("ViewportTexture_tbta4")
+
+[node name="Borders" type="Sprite2D" parent="UI_table"]
+position = Vector2(480, 270)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_snf7w")
+
+[node name="info" type="Sprite2D" parent="UI_table"]
+position = Vector2(127.25, 368.781)
+scale = Vector2(0.389167, 0.389167)
+texture = ExtResource("6_ox876")
+
+[node name="mulligan" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1226.0
+offset_top = -484.0
+offset_right = -463.0
+offset_bottom = -376.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.346, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Optional Mulligan"
+icon_alignment = 2
+
+[node name="keepHand" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.99988
+offset_top = -484.0
+offset_right = 768.0
+offset_bottom = -376.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.346, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Keep Hand "
+icon_alignment = 2
+
 [node name="cardViewer" type="Button" parent="UI_table"]
 visible = false
 anchors_preset = 3
@@ -243,38 +305,73 @@ size_flags_stretch_ratio = 2.0
 text = "Generate Deck"
 icon_alignment = 2
 
-[node name="Bar" type="Sprite2D" parent="UI_table"]
-position = Vector2(480, -6)
-scale = Vector2(0.6, 0.5)
-texture = ExtResource("6_7naak")
-
 [node name="p1Face" type="Sprite2D" parent="UI_table"]
-position = Vector2(320, 70)
-scale = Vector2(-0.5, 0.5)
+position = Vector2(105, 102.674)
+scale = Vector2(-0.746502, 0.746502)
 texture = ExtResource("7_j7wd3")
 
 [node name="p2Face" type="Sprite2D" parent="UI_table"]
-position = Vector2(640, 70)
-scale = Vector2(0.5, 0.5)
+position = Vector2(856, 101)
+scale = Vector2(0.746502, 0.746502)
 texture = ExtResource("8_i4vvq")
 
+[node name="messages" type="Node2D" parent="UI_table"]
+modulate = Color(1, 1, 1, 0)
+
+[node name="messageBar" type="Sprite2D" parent="UI_table/messages"]
+modulate = Color(1, 1, 1, 0.45098)
+position = Vector2(480, 316)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="messageBar" type="Sprite2D" parent="UI_table/messages/messageBar"]
+modulate = Color(1, 1, 1, 0.698039)
+position = Vector2(-1.00002, 26)
+scale = Vector2(1.00104, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="messageBar2" type="Sprite2D" parent="UI_table/messages/messageBar"]
+modulate = Color(1, 1, 1, 0.698039)
+position = Vector2(-1.00002, 26)
+scale = Vector2(1.00104, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="message" type="RichTextLabel" parent="UI_table/messages"]
+offset_left = 3.0
+offset_top = 319.0
+offset_right = 2378.0
+offset_bottom = 426.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 18
+theme_override_constants/outline_size = 28
+theme_override_font_sizes/normal_font_size = 78
+bbcode_enabled = true
+text = "[center]sdfsdfsdfsdf[/center]"
+scroll_active = false
+
 [node name="turnLabel" type="RichTextLabel" parent="UI_table"]
-offset_left = 390.0
-offset_top = 45.0
-offset_right = 695.0
-offset_bottom = 131.0
-scale = Vector2(0.4, 0.8)
-theme = SubResource("Theme_dy0ak")
+offset_left = 202.0
+offset_top = 3.0
+offset_right = 497.0
+offset_bottom = 99.0
+scale = Vector2(0.529, 0.529)
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 27
 text = "TURN :"
 scroll_active = false
 
-[node name="turnLabel2" type="RichTextLabel" parent="UI_table"]
-offset_left = 512.0
-offset_top = 45.0
-offset_right = 817.0
-offset_bottom = 131.0
-scale = Vector2(0.4, 0.8)
-theme = SubResource("Theme_dy0ak")
+[node name="turnText" type="RichTextLabel" parent="UI_table"]
+offset_left = 352.0
+offset_top = 3.0
+offset_right = 628.0
+offset_bottom = 103.0
+scale = Vector2(0.529, 0.529)
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 27
 text = "001"
 scroll_active = false
 
@@ -306,6 +403,20 @@ icon_alignment = 2
 
 [node name="3D_OBJECTS" type="Node3D" parent="."]
 
+[node name="Camera3Dp1" type="Camera3D" parent="3D_OBJECTS"]
+transform = Transform3D(1, 0, 0, 0, 0.772734, 0.634731, 0, -0.634731, 0.772734, 0, 218.355, 275.249)
+environment = ExtResource("2_cukcg")
+attributes = SubResource("CameraAttributesPractical_3phe6")
+current = true
+fov = 79.4
+size = 0.07
+frustum_offset = Vector2(-0.01, 0)
+near = 0.045
+far = 2672.98
+
+[node name="SubViewport" type="SubViewport" parent="3D_OBJECTS"]
+size = Vector2i(5760, 3240)
+
 [node name="viewer" type="Node3D" parent="3D_OBJECTS"]
 
 [node name="Camera3Dviewer" type="Camera3D" parent="3D_OBJECTS/viewer"]
@@ -327,16 +438,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_spkdl")
 
 [node name="table" type="Node3D" parent="3D_OBJECTS"]
 
-[node name="stadium" type="MeshInstance3D" parent="3D_OBJECTS/table"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -97.1958, 41.5702, -1.38043)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_i7x2i")
-
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
 
+[node name="designated" type="Node3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 187.114)
+
 [node name="hand" type="Node3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.8967, 222.571)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.897, 222.571)
 
 [node name="deck" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 168.548, 41.5702, 64.8483)
@@ -428,13 +536,17 @@ mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
-[node name="Camera3Dp1" type="Camera3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 205.936, 320.544)
-environment = ExtResource("2_cukcg")
-current = true
+[node name="SubViewport" type="SubViewport" parent="3D_OBJECTS/table/p1"]
+msaa_2d = 2
+msaa_3d = 1
+screen_space_aa = 1
+size = Vector2i(7680, 4320)
 
 [node name="p2" type="Node3D" parent="3D_OBJECTS/table"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="designated" type="Node3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 187.114)
 
 [node name="hand" type="Node3D" parent="3D_OBJECTS/table/p2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.8967, 222.571)
@@ -532,6 +644,17 @@ surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 [node name="Camera3Dp2" type="Camera3D" parent="3D_OBJECTS/table/p2"]
 transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 205.936, 320.544)
 
+[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS/table"]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 40.5951, 0)
+mesh = ExtResource("11_wg00g")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_d7g0y")
+
+[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS/table/Plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.349714, 0.2)
+mesh = ExtResource("11_wg00g")
+surface_material_override/0 = SubResource("StandardMaterial3D_f6y3l")
+
 [node name="Classroom" type="MeshInstance3D" parent="3D_OBJECTS"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5908, -28.0623, -2.54083)
 mesh = ExtResource("1_0q5lh")
@@ -548,16 +671,9 @@ surface_material_override/16 = SubResource("StandardMaterial3D_25wkv")
 surface_material_override/17 = SubResource("StandardMaterial3D_x4uwc")
 surface_material_override/18 = SubResource("StandardMaterial3D_g3ok7")
 
-[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS"]
-transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 40.5951, 0)
-mesh = ExtResource("11_wg00g")
-surface_material_override/0 = SubResource("StandardMaterial3D_d7g0y")
-
-[node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS/Plane"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.349714, 0.2)
-mesh = ExtResource("11_wg00g")
-surface_material_override/0 = SubResource("StandardMaterial3D_f6y3l")
-
+[connection signal="pressed" from="UI_table/mulligan" to="TurnSystem" method="_on_mulligan_pressed"]
+[connection signal="pressed" from="UI_table/keepHand" to="." method="_on_keep_hand_pressed"]
+[connection signal="pressed" from="UI_table/keepHand" to="TurnSystem" method="_on_keep_hand_pressed"]
 [connection signal="button_up" from="UI_table/cardViewer" to="." method="_on_card_viewer_button_up"]
 [connection signal="pressed" from="UI_table/cardViewer" to="." method="_on_card_viewer_pressed"]
 [connection signal="pressed" from="UI_table/genDeck" to="." method="_on_gen_deck_pressed"]

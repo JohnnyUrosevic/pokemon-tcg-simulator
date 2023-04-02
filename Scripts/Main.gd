@@ -19,7 +19,6 @@ var draww = false
 var highlightedCard
 ########################################################
 var gameScope = "table"
-var playerSlot = "1"
 var CARD_STACK_OFFSET = 0.35
 #######################
 #-INITIALIZATION-------
@@ -76,7 +75,7 @@ func _on_card_viewer_pressed():
 func _on_table_pressed():
 	print("[BUTTON] To Table Pressed")
 	gameScope = "table"
-	get_node("3D_OBJECTS/table/p1/Camera3Dp1").make_current()
+	get_node("3D_OBJECTS/table/p1/SubViewport/Camera3Dp1").make_current()
 	get_node("3D_OBJECTS/viewer/card").visible = false
 	$UI_table.visible = true
 	$UI_viewer.visible = false
@@ -85,7 +84,7 @@ func _on_gen_deck_pressed():
 	var cardList = []
 	for n in 60:
 		cardList.append("base1-"+str(rng.randi_range(1,102)))
-	generateDeck(cardList,playerSlot)
+	generateDeck(cardList,1)
 #######################
 #-CARD VIEWER----------
 #######################
@@ -119,35 +118,35 @@ func loadRandomCardInViewer():
 #-GAME FUNCTIONS-------
 #######################
 func generateDeck(cardList,thisPlayerSlot):
+	thisPlayerSlot = str(thisPlayerSlot)
 	var deckLocation = get_node("3D_OBJECTS/table/p"+str(thisPlayerSlot)+"/deck").global_position
 	var card
 	var cardsInDeck = get_node("3D_OBJECTS/table/p"+str(thisPlayerSlot)+"/deck").get_children()
 	#delete existsing
-	for n in get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count():
+	for n in get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_child_count():
 		var thisCard = cardsInDeck[n]
-		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").remove_child(thisCard)
+		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").remove_child(thisCard)
 		thisCard.queue_free()
 	var deckCount
 	#instantiate new
+	var cardsInDedck
 	for n in cardList.size():
 		card = preload("res://Scenes/card.tscn").instantiate()
-		get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").add_child(card)
-		deckCount = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_child_count()
+		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").add_child(card)
+		deckCount = get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_child_count()
 		card.scale = Vector3(1,1,1)
 		#card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
 		card.id = cardList[n]
-		card.playerSlot = playerSlot
-		print(card.id+","+str(playerSlot))
+		card.playerSlot = thisPlayerSlot
+		print(card.id+","+str(thisPlayerSlot))
 		card.initialize()
-	cardsInDeck = get_node("3D_OBJECTS/table/p"+playerSlot+"/deck").get_children()
-	cardsInDeck.reverse()
-	for n in cardsInDeck.size():
-		cardsInDeck[n].global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*(n),0)
+		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_children().reverse()
+		cardsInDeck = get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_children()
+	$TurnSystem.alignDeck(int(thisPlayerSlot))
 	#START GAME
 	await get_tree().create_timer(0.2).timeout
-	draw7(1)
+	#draw7(1)
 func draw7(playerSlot):
-	for n in 8:
+	for n in 7:
 		$TurnSystem.drawCardsFrom("deck",playerSlot)
 		await get_tree().create_timer(0.2).timeout
-	

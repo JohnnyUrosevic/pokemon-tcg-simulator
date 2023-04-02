@@ -20,12 +20,14 @@ config/icon="res://icon.svg"
 JsonMate="*res://Scripts/json_mate.gd"
 API="*res://Scripts/api.gd"
 PngMate="*res://Scripts/png_mate.gd"
+MessageMate="*res://Scripts/message_mate.gd"
+GeneralMate="*res://Scripts/general_mate.gd"
 
 [display]
 
 window/size/viewport_width=960
 window/size/viewport_height=540
-window/size/mode=3
+window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [editor]
