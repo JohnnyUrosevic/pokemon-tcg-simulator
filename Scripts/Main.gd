@@ -14,8 +14,9 @@ var searchTarget = "base1-4"
 var url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
+var cardBack = load("res://Textures/cardBack.png")
 ##################Statemachine#####################
-var draww = false
+var draww = 0
 var highlightedCard
 ########################################################
 var gameScope = "table"
@@ -129,7 +130,6 @@ func generateDeck(cardList,thisPlayerSlot):
 		thisCard.queue_free()
 	var deckCount
 	#instantiate new
-	var cardsInDedck
 	for n in cardList.size():
 		card = preload("res://Scenes/card.tscn").instantiate()
 		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").add_child(card)
@@ -143,10 +143,8 @@ func generateDeck(cardList,thisPlayerSlot):
 		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_children().reverse()
 		cardsInDeck = get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_children()
 	$TurnSystem.alignDeck(int(thisPlayerSlot))
-	#START GAME
 	await get_tree().create_timer(0.2).timeout
-	#draw7(1)
-func draw7(playerSlot):
-	for n in 7:
+func drawAmt(playerSlot,amt):
+	for n in amt:
 		$TurnSystem.drawCardsFrom("deck",playerSlot)
 		await get_tree().create_timer(0.2).timeout

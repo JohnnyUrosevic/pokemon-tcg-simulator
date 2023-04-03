@@ -2,7 +2,7 @@ extends MeshInstance3D
 
 
 signal done
-
+signal physicsProcess
 
 #######################
 #-VARIABLES------------
@@ -14,10 +14,13 @@ var cardDict = {}
 var cardImage = Image.new()
 var bigImage = Image.new()
 var bigTexture
+var smallTexture
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
 var hovering = false
 var darkedOut = false
+var revealed = false
+var handPosition
 
 var cancelMove = false #set to true when card movement must be overwritten by a subsequent movement
 #######################
@@ -25,15 +28,13 @@ var cancelMove = false #set to true when card movement must be overwritten by a 
 #######################
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var texture = load("res://.godot/imported/cardBack.png-1d8732877f92ce0c993bbb589758e78d.ctex")
-	var material = StandardMaterial3D.new()
-	material.set_texture(0,texture)
-	material.no_depth_test = false
-	set_surface_override_material(0,material)
-func _process(delta):
+	pass
+func _physics_process(delta):
+	physicsProcess.emit()
 	if get_node("/root/Control").highlightedCard != self && hovering:
 		hovering = false
-		await get_node("/root/Control/TurnSystem").alignHand(1)
+		if get_parent().name=="hand":
+			moveToLocation(self,handPosition+Vector3(0,0,0),.2,true)
 func initialize():
 	if(!json_mate.jsonExists(id)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
@@ -43,6 +44,7 @@ func initialize():
 			$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 		else:
 			cardImage = png_mate.loadPNG(id,"small")
+			smallTexture = ImageTexture.create_from_image(cardImage)
 		if(!png_mate.pngExists(id,"large")):
 			$picRequest2.request(cardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
 		else:
@@ -59,22 +61,29 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 			#get_node("/root/Control/TurnSystem").drawCardsFrom("deck",1)
 			if(get_node("/root/Control").highlightedCard == self):
 				get_node("/root/Control/TurnSystem").designateCard(self,1)
-				get_node("/root/Control/TurnSystem").alignHand(1)
+				await get_node("/root/Control/TurnSystem").alignHand(1)
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true and get_parent().name=="designated":
 			#get_node("/root/Control/TurnSystem").drawCardsFrom("deck",1)
 			get_node("/root/Control/TurnSystem").undesignateCard(self,1)
 			await get_node("/root/Control/TurnSystem").alignDesignated(1)
-	if get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect:
+	#CHANGE PICTURE###############
+	if get_parent().name!="deck" && get_owner_name()==str(1):
+		get_node("/root/Control/UI_table/info").texture = bigTexture
+	elif get_parent().name!="deck" && get_owner_name()==str(2):
+		if revealed:
+			get_node("/root/Control/UI_table/info").texture = bigTexture
+		else:
+			get_node("/root/Control/UI_table/info").texture = load ("res://Textures/smallerBack.png")
+	#HOVER CARD##################
+	if get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect && get_owner_name()==str(1):
+		#await physicsProcess
 		hoverHighlight()
 func _on_area_3d_mouse_entered():
 	print(name)
-	if get_parent().name!="deck":
-		if(get_node("/root/Control/TurnSystem").lastHover==self):
-			return
-		get_node("/root/Control/UI_table/info").texture = bigTexture
-		get_node("/root/Control/TurnSystem").lastHover = self
+	#HOVER CARD##################
 func _on_area_3d_mouse_exited():
-	get_node("/root/Control").highlightedCard = null
+	if get_node("/root/Control").highlightedCard==self:
+		get_node("/root/Control").highlightedCard = null
 
 #######################
 #-CARD FUNCTIONS-------
@@ -118,17 +127,18 @@ func updateTexture():
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
 func hoverHighlight():
-	if darkedOut:
+	if darkedOut || get_node("/root/Control").highlightedCard == self:
 		return
-	if get_node("/root/Control").draww:
+	if get_node("/root/Control").draww>0:
+		print("draww was true || overridden")
 		return
 	if !hovering:
-		moveToLocation(self,global_position+Vector3(0,0,-11),.2,false)
+		moveToLocation(self,handPosition+Vector3(0,0,-11),.2,true)
 	hovering = true
 	get_node("/root/Control").highlightedCard = self
 func moveToLocation(obj, location, travelTime, finish):
 	cancelMove = true
-	await obj.get_tree().create_timer(1/144).timeout
+	await physicsProcess
 	cancelMove = false
 	var distance = (location-obj.global_position).length()
 	var ogDistance = distance
@@ -139,10 +149,12 @@ func moveToLocation(obj, location, travelTime, finish):
 		obj.global_position += direction*(1.0/144)*ogDistance/travelTime
 		time+=1.0/144
 		#print (str(time))
-		await obj.get_tree().create_timer(1/144).timeout
+		await physicsProcess
 	cancelMove = false
 	if finish:
 		obj.global_position=location
+func get_owner_name():
+	return get_parent().get_parent().name.substr(1,-1)
 #######################
 #-API CALLS------------
 #######################
@@ -160,6 +172,7 @@ func _on_card_request_request_completed(result, response_code, headers, body):
 		$picRequest.request(cardDict["images"]["small"],['X-Api-Key: ' + API.KEY])
 	else:
 		cardImage = png_mate.loadPNG(id,"small")
+		smallTexture = ImageTexture.create_from_image(cardImage)
 	if(!png_mate.pngExists(id,"large")):
 		$picRequest2.request(cardDict["images"]["large"],['X-Api-Key: ' + API.KEY])
 	else:

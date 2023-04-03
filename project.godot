@@ -39,6 +39,10 @@ version_control/autoload_on_startup=true
 
 import/fbx/enabled=false
 
+[physics]
+
+common/physics_ticks_per_second=144
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

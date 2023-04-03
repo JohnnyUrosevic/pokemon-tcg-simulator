@@ -1,8 +1,8 @@
-[gd_scene load_steps=49 format=3 uid="uid://38apenipdphh"]
+[gd_scene load_steps=49 format=3 uid="uid://bmt7h7yrf088g"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
-[ext_resource type="Script" path="res://Scripts/main.gd" id="1_s0iiu"]
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_yqjev"]
 [ext_resource type="Texture2D" uid="uid://hpp7dqbiid2t" path="res://Textures/sevsyxf2.bmp" id="2_2owcf"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
 [ext_resource type="Script" path="res://Scripts/turn_system.gd" id="2_kmohx"]
@@ -143,7 +143,7 @@ offset_right = -920.0
 offset_bottom = -500.0
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("1_s0iiu")
+script = ExtResource("1_yqjev")
 
 [node name="TurnSystem" type="Control" parent="."]
 anchors_preset = 0
@@ -210,11 +210,6 @@ texture_filter = 2
 position = Vector2(595, 327.48)
 scale = Vector2(0.208574, 0.208574)
 texture = SubResource("ViewportTexture_tbta4")
-
-[node name="Borders" type="Sprite2D" parent="UI_table"]
-position = Vector2(480, 270)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_snf7w")
 
 [node name="info" type="Sprite2D" parent="UI_table"]
 position = Vector2(127.25, 368.781)
@@ -305,18 +300,25 @@ size_flags_stretch_ratio = 2.0
 text = "Generate Deck"
 icon_alignment = 2
 
-[node name="p1Face" type="Sprite2D" parent="UI_table"]
-position = Vector2(105, 102.674)
-scale = Vector2(-0.746502, 0.746502)
-texture = ExtResource("7_j7wd3")
-
 [node name="p2Face" type="Sprite2D" parent="UI_table"]
-position = Vector2(856, 101)
-scale = Vector2(0.746502, 0.746502)
+position = Vector2(855, 104.662)
+scale = Vector2(0.820658, 0.820658)
 texture = ExtResource("8_i4vvq")
 
+[node name="p1Face" type="Sprite2D" parent="UI_table"]
+position = Vector2(104.117, 104.117)
+scale = Vector2(-0.820658, 0.820658)
+texture = ExtResource("7_j7wd3")
+
+[node name="Borders" type="Sprite2D" parent="UI_table"]
+position = Vector2(480, 270)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_snf7w")
+
 [node name="messages" type="Node2D" parent="UI_table"]
+visible = false
 modulate = Color(1, 1, 1, 0)
+position = Vector2(0, -17)
 
 [node name="messageBar" type="Sprite2D" parent="UI_table/messages"]
 modulate = Color(1, 1, 1, 0.45098)
@@ -360,19 +362,21 @@ scale = Vector2(0.529, 0.529)
 theme = ExtResource("6_oks16")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 27
-text = "TURN :"
+bbcode_enabled = true
+text = "[center]TURN[/center]"
 scroll_active = false
 
 [node name="turnText" type="RichTextLabel" parent="UI_table"]
-offset_left = 352.0
-offset_top = 3.0
-offset_right = 628.0
-offset_bottom = 103.0
+offset_left = 182.0
+offset_top = 47.0
+offset_right = 458.0
+offset_bottom = 147.0
 scale = Vector2(0.529, 0.529)
 theme = ExtResource("6_oks16")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 27
-text = "001"
+bbcode_enabled = true
+text = "[center]001[/center]"
 scroll_active = false
 
 [node name="UI_viewer" type="CanvasLayer" parent="."]
@@ -404,15 +408,16 @@ icon_alignment = 2
 [node name="3D_OBJECTS" type="Node3D" parent="."]
 
 [node name="Camera3Dp1" type="Camera3D" parent="3D_OBJECTS"]
-transform = Transform3D(1, 0, 0, 0, 0.772734, 0.634731, 0, -0.634731, 0.772734, 0, 218.355, 275.249)
+transform = Transform3D(1, 0, 0, 0, 0.911403, 0.411514, 0, -0.411514, 0.911403, 0, 200, 320)
 environment = ExtResource("2_cukcg")
 attributes = SubResource("CameraAttributesPractical_3phe6")
+v_offset = -14.617
+doppler_tracking = 2
+projection = 2
 current = true
-fov = 79.4
-size = 0.07
-frustum_offset = Vector2(-0.01, 0)
-near = 0.045
-far = 2672.98
+fov = 71.1
+size = 3.0
+near = 2.191
 
 [node name="viewer" type="Node3D" parent="3D_OBJECTS"]
 
@@ -434,6 +439,7 @@ skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_spkdl")
 
 [node name="table" type="Node3D" parent="3D_OBJECTS"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 0, 0)
 
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
 

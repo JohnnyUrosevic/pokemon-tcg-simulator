@@ -1,22 +1,30 @@
-[gd_scene load_steps=6 format=3 uid="uid://c1iwap61c30lo"]
+[gd_scene load_steps=7 format=3 uid="uid://m1480mskx7lp"]
 
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_j2ci3"]
 [ext_resource type="Texture2D" uid="uid://0di2o5jcvuah" path="res://Textures/cardBack.png" id="2_o5f43"]
-[ext_resource type="Script" path="res://Scripts/card.gd" id="3_b2dor"]
+[ext_resource type="Script" path="res://Scripts/Card.gd" id="3_b8kg5"]
+[ext_resource type="Script" path="res://Scripts/CardStats.gd" id="4_gfw2b"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a1nj8"]
 albedo_texture = ExtResource("2_o5f43")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s73ip"]
 margin = 0.001
-size = Vector3(4.98, 0.043, 6.94)
+size = Vector3(4.98, 0.001, 6.94)
 
 [node name="Card" type="MeshInstance3D"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 0, 0, 0)
 mesh = ExtResource("1_j2ci3")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_a1nj8")
-script = ExtResource("3_b2dor")
+script = ExtResource("3_b8kg5")
+
+[node name="CardStats" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_gfw2b")
 
 [node name="Area3D" type="Area3D" parent="."]
 priority = 1.0
