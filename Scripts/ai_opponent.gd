@@ -27,6 +27,7 @@ func callAI():
 		await get_tree().create_timer(1).timeout
 		await control.drawAmt(2,7)
 		while(true):
+			# no decisionMakingImplemented
 			await physicsProcess
 			if(turnSys.turnPlayer==1):
 				continue
