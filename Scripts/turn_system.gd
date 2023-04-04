@@ -3,8 +3,8 @@ extends Control
 signal turnEnd
 signal clickedConfirm
 signal physicsProcess
+signal decideDrawSignal
 
-var mulliganDecision = -1
 
 #######################
 #-VARIABLES------------
@@ -18,12 +18,14 @@ var turnText
 var turnLabel
 var rng = RandomNumberGenerator.new()
 var canSelect
+var mulliganDecision = -1
 var mulligansTaken = 0
 var mulligansTakenByOpponent = 0
 var usedAdditionalMulligan = false
 var lastHover = null
-var online = true
+var online = false
 var opponentReady= false
+var decideDraw = false
 
 #####FOR PLAYER DATA######
 var character = "birdTamer"
@@ -69,6 +71,7 @@ func initializeOnline():
 			turnLabel.text = str(rng.seed)
 		await physicsProcess
 		continue
+#####################################################################################@
 func initializeMatch():
 	if(online):
 		await initializeOnline()
@@ -110,6 +113,7 @@ func initializeMatch():
 	await drawForOpponentMulligans()
 	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]Battle Start![/center]",1,)
 	revealAllPokemon()
+#############################################################
 func coinFlip():
 	var result = rng.randf_range(0,1.0)
 	var heads = false
@@ -117,10 +121,26 @@ func coinFlip():
 		heads = true
 	return heads
 func drawForOpponentMulligans():
+	############DEBUGGING CODE####
+	opponentReady = true
+	mulligansTakenByOpponent= 2
+	##############################
 	while !opponentReady:
 		await physicsProcess
 		continue
-	await control.drawAmt(1,mulligansTakenByOpponent)
+	
+	if mulligansTakenByOpponent == 0:
+		return
+	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]Draw for opponent's "+str(mulligansTakenByOpponent)+" mulligans?[/center]",1,)
+	for n in mulligansTakenByOpponent:
+		GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulliganDraw"),Vector2(353,16),0.2,false)
+		await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/skipDraw"),Vector2(552,16),0.2,false)
+		await decideDrawSignal
+		GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulliganDraw"),Vector2(353,-39),0.2,false)
+		await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/skipDraw"),Vector2(552,-39),0.2,false)
+		if !decideDraw:
+			return
+		await control.drawAmt(1,1)
 #######################
 #-MAIN PROCESSES-------
 #######################
@@ -133,7 +153,7 @@ func gamePlay():
 		integerString = str(int(round(turn)))
 		digits = integerString.length()
 		turnText.text = "[center]"+integerString.pad_zeros(4-digits)+"[/center]"
-		if("1"==str(turnPlayer)):#1 is our turn, 2 is the opponents turn
+		if(globalPlayer==turnPlayer):#1 is our turn, 2 is the opponents turn
 			canSelect = true
 			GeneralMate.lighten(get_node("/root/Control/UI_table/p1Face"))
 			GeneralMate.darken(get_node("/root/Control/UI_table/p2Face"))
@@ -145,7 +165,7 @@ func gamePlay():
 			GeneralMate.lighten(get_node("/root/Control/UI_table/p2Face"))
 			GeneralMate.darken(get_node("/root/Control/UI_table/p1Face"))
 			await turnEnd #called when an action that would end the turn is taken
-	passTurn() #increments turn
+		passTurn() #increments turn
 #######################
 #-CONTROL FUNCTIONS----
 #######################
@@ -172,13 +192,14 @@ func drawCardsFrom(container,playerSlot):
 	alignHand(playerSlot)
 	await get_tree().create_timer(.2).timeout
 	get_node("/root/Control").draww -=1
+	pass
 func passTurn():
 	turn+=0.5
 	match turnPlayer:
-			1:
-				turnPlayer = 2
-			2:
-				turnPlayer = 1
+		1:
+			turnPlayer = 2
+		2:
+			turnPlayer = 1
 func distributePrizeCards():
 	pass
 func basicPokemonCheck(playerSlot): #called at the beginning of a match after draw to determine mulligans
@@ -220,12 +241,12 @@ func normalMulligan(playerSlot): #called when no basic pokemon are drawn and han
 	await shuffleDeck(playerSlot)#rearrange order of cards in deck randomly
 	await control.drawAmt(turnPlayer,handSize)
 func additionalMulliganDecision(playerSlot):
-	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulligan"),Vector2(213,56),0.2,false)
-	await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/keepHand"),Vector2(487,56),0.2,false)
+	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulligan"),Vector2(353,16),0.2,false)
+	await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/keepHand"),Vector2(552,16),0.2,false)
 	while(mulliganDecision == -1):
 		await get_tree().create_timer(1.0/144).timeout
-	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulligan"),Vector2(-272,56),0.2,false)
-	await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/keepHand"),Vector2(965,56),0.2,false)
+	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/mulligan"),Vector2(353,-39),0.2,false)
+	await GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/keepHand"),Vector2(552,-39),0.2,false)
 	if(mulliganDecision == 0):
 		mulliganDecision = -1
 		return true
@@ -286,7 +307,8 @@ func returnToDeck(card, playerSlot): #takes a card from anywhere and returns it 
 func designateCard(card, playerSlot): #takes a card from anywhere and returns it to the deck
 	var designated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
 	card.reparent(designated)
-	designated.move_child(card,0)
+	if(turn>0):
+		designated.move_child(card,0)
 	await alignDesignated(playerSlot)
 func undesignateCard(card, playerSlot): 
 	var undesignated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/hand")
@@ -325,3 +347,9 @@ func playCards(playerSlot):
 			await physicsProcess
 			undesignateCard(designated.get_children()[1],playerSlot)
 		await physicsProcess
+func _on_mulligan_draw_pressed():
+	decideDraw = true
+	decideDrawSignal.emit()
+func _on_skip_draw_pressed():
+	decideDraw = false
+	decideDrawSignal.emit()

@@ -216,26 +216,26 @@ position = Vector2(127.25, 368.781)
 scale = Vector2(0.389167, 0.389167)
 texture = ExtResource("6_ox876")
 
-[node name="mulligan" type="Button" parent="UI_table"]
+[node name="skipDraw" type="Button" parent="UI_table"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1226.0
-offset_top = -484.0
-offset_right = -463.0
-offset_bottom = -376.0
+offset_left = -408.0
+offset_top = -579.0
+offset_right = 355.0
+offset_bottom = -471.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.346, 0.346)
+scale = Vector2(0.25, 0.346)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 theme = ExtResource("6_oks16")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 39
-text = "Optional Mulligan"
+text = "Skip"
 icon_alignment = 2
 
 [node name="keepHand" type="Button" parent="UI_table"]
@@ -244,13 +244,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.99988
-offset_top = -484.0
-offset_right = 768.0
-offset_bottom = -376.0
+offset_left = -408.0
+offset_top = -579.0
+offset_right = 355.0
+offset_bottom = -471.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.346, 0.346)
+scale = Vector2(0.25, 0.346)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
@@ -258,6 +258,50 @@ theme = ExtResource("6_oks16")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 39
 text = "Keep Hand "
+icon_alignment = 2
+
+[node name="mulliganDraw" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -607.0
+offset_top = -579.0
+offset_right = 156.0
+offset_bottom = -471.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Draw for Mulligan"
+icon_alignment = 2
+
+[node name="mulligan" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -607.0
+offset_top = -579.0
+offset_right = 156.0
+offset_bottom = -471.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Optional Mulligan"
 icon_alignment = 2
 
 [node name="cardViewer" type="Button" parent="UI_table"]
@@ -674,9 +718,11 @@ surface_material_override/16 = SubResource("StandardMaterial3D_25wkv")
 surface_material_override/17 = SubResource("StandardMaterial3D_x4uwc")
 surface_material_override/18 = SubResource("StandardMaterial3D_g3ok7")
 
-[connection signal="pressed" from="UI_table/mulligan" to="TurnSystem" method="_on_mulligan_pressed"]
+[connection signal="pressed" from="UI_table/skipDraw" to="TurnSystem" method="_on_skip_draw_pressed"]
 [connection signal="pressed" from="UI_table/keepHand" to="." method="_on_keep_hand_pressed"]
 [connection signal="pressed" from="UI_table/keepHand" to="TurnSystem" method="_on_keep_hand_pressed"]
+[connection signal="pressed" from="UI_table/mulliganDraw" to="TurnSystem" method="_on_mulligan_draw_pressed"]
+[connection signal="pressed" from="UI_table/mulligan" to="TurnSystem" method="_on_mulligan_pressed"]
 [connection signal="button_up" from="UI_table/cardViewer" to="." method="_on_card_viewer_button_up"]
 [connection signal="pressed" from="UI_table/cardViewer" to="." method="_on_card_viewer_pressed"]
 [connection signal="pressed" from="UI_table/genDeck" to="." method="_on_gen_deck_pressed"]
