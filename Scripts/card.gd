@@ -9,7 +9,7 @@ signal physicsProcess
 #######################
 var json = JSON.new()
 var id = "null"
-var playerSlot = -1
+var ownerOf
 var cardDict = {}
 var cardImage = Image.new()
 var bigImage = Image.new()
@@ -50,6 +50,7 @@ func initialize():
 		else:
 			bigImage = png_mate.loadPNG(id,"large")
 			bigTexture = ImageTexture.create_from_image(bigImage)
+	ownerOf=self.get_parent().get_parent()
 	done.emit()
 #######################
 #-CARD INTERFACING----
@@ -74,6 +75,11 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 			get_node("/root/Control/UI_table/info").texture = bigTexture
 		else:
 			get_node("/root/Control/UI_table/info").texture = load ("res://Textures/smallerBack.png")
+	else:
+		if revealed:
+			get_node("/root/Control/UI_table/info").texture = bigTexture
+		else:
+			get_node("/root/Control/UI_table/info").texture = load ("res://Textures/smallerBack.png")
 	#HOVER CARD##################
 	if get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect && get_owner_name()==str(1):
 		#await physicsProcess
@@ -81,9 +87,12 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 func _on_area_3d_mouse_entered():
 	print(name)
 	#HOVER CARD##################
+	get_node("/root/Control").hoveringCard = self
 func _on_area_3d_mouse_exited():
 	if get_node("/root/Control").highlightedCard==self:
 		get_node("/root/Control").highlightedCard = null
+	if get_node("/root/Control").hoveringCard==self:
+		get_node("/root/Control").hoveringCard = null
 
 #######################
 #-CARD FUNCTIONS-------

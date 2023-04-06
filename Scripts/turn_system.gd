@@ -22,16 +22,21 @@ var mulliganDecision = -1
 var mulligansTaken = 0
 var mulligansTakenByOpponent = 0
 var usedAdditionalMulligan = false
+var usedSupporter = false
+var attacked = false
+var attachedEnergy = false
 var lastHover = null
 var online = false
 var opponentReady= false
 var decideDraw = false
-
+var clicked = false
+var targetConfirmed = false
+var cardTarget
 #####FOR PLAYER DATA######
 var character = "birdTamer"
 var deckList
 var globalPlayer = -1
-
+var cardBack = load("res://Textures/smallerBack.png")
 #######################
 #-INITIALIZATION-------
 #######################
@@ -52,8 +57,11 @@ func randomDeckFromSet(set):
 			setCount = 132
 	var cardList = [] 
 	if cardList.size() == 0:
-		for n in 60: #makes a random deck
+		for n in 40: #makes a random deck
 			cardList.append(set+"-"+str(rng.randi_range(1,setCount)))
+		for n in 20: #makes a random deck
+			cardList.append("base1-102")
+	cardList.shuffle()
 	return cardList
 func _ready():
 	turnText = get_parent().get_node("UI_table/turnText")
@@ -63,6 +71,8 @@ func _ready():
 	gamePlay()
 func _physics_process(delta):
 	physicsProcess.emit()
+	clicked = false
+	targetConfirmed = false
 func initializeOnline():
 	turnText.text = "RNG SEED"
 	while true:
@@ -115,6 +125,7 @@ func initializeMatch():
 	revealAllPokemon()
 #############################################################
 func coinFlip():
+	return true
 	var result = rng.randf_range(0,1.0)
 	var heads = false
 	if result > 0.5:
@@ -158,7 +169,8 @@ func gamePlay():
 			GeneralMate.lighten(get_node("/root/Control/UI_table/p1Face"))
 			GeneralMate.darken(get_node("/root/Control/UI_table/p2Face"))
 			await drawCardsFrom("deck",1)
-			await playCards(1)
+			while(!attacked):
+				await playCards(1)
 			await turnEnd #called when an action that would end the turn is taken
 		else:
 			canSelect = false
@@ -179,6 +191,10 @@ func _input(ev):
 	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_RIGHT:
 		if get_node("/root/Control/3D_OBJECTS/table/p"+str(1)+"/designated").get_child_count()>0:
 			clickedConfirm.emit()
+			clicked = true
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		if control.hoveringCard!=null:
+			targetConfirmed=true
 func drawCardsFrom(container,playerSlot):
 	get_node("/root/Control").draww  +=1
 	var drawTarget = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/"+container)
@@ -200,6 +216,9 @@ func passTurn():
 			turnPlayer = 2
 		2:
 			turnPlayer = 1
+	usedSupporter = false
+	attachedEnergy = false
+	attacked = false
 func distributePrizeCards():
 	pass
 func basicPokemonCheck(playerSlot): #called at the beginning of a match after draw to determine mulligans
@@ -319,15 +338,16 @@ func shuffleDeck(playerSlot):
 	get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/deck").get_children().shuffle()
 	var deck = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/deck").get_children()
 	await alignDeck(playerSlot)
-func _on_mulligan_pressed():
-	mulliganDecision = 0
-func _on_keep_hand_pressed():
-	mulliganDecision = 1
 func revealAllPokemon():
 	var pokemon = getInPlayPokemon()
 	for n in pokemon.size():
-		pokemon[n].revealed = true
-		pokemon[n].get_active_material(0).set_texture(0,pokemon[n].smallTexture)
+		revealPokemon(pokemon[n])
+func revealPokemon(card):
+	card.revealed = true
+	card.get_active_material(0).set_texture(0,card.smallTexture)
+func concealPokemon(card):
+	card.revealed = false
+	card.get_active_material(0).set_texture(0,cardBack)
 func getInPlayPokemon():
 	var n = 1
 	var k = 1
@@ -339,17 +359,122 @@ func getInPlayPokemon():
 		inPlayPokemon+=(get_node("/root/Control/3D_OBJECTS/table/p"+str(n)+"/active").get_children())
 		n+=1
 	return inPlayPokemon
+####################PLAYING CARDS###########################
 func playCards(playerSlot):
 	var designated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
 	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
-	while(true):
+	while(!clicked||designated.get_child_count()==0):
 		if designated.get_child_count()>1:
 			await physicsProcess
 			undesignateCard(designated.get_children()[1],playerSlot)
 		await physicsProcess
+	clicked = false
+	var chosenCard = designated.get_children()[0]
+	await playByKind(chosenCard,playerSlot)
+func playByKind(card,playerSlot):
+	match card.cardDict["supertype"]:
+		"Pokémon":
+			await playPokemon(card,playerSlot)
+		"Energy":
+			await playEnergy(card,playerSlot)
+		"Trainer":
+			await playTrainer(card,playerSlot)
+func playPokemon(card,playerSlot):
+	print("Play pokemon")
+	if card.cardDict.has("subtypes"):
+		if !card.cardDict["subtypes"].has("Basic"):
+			await playEvolution(card, playerSlot)
+			return
+	revealPokemon(card)
+	card.goBench(playerSlot)
+	return
+func playEnergy(card,playerSlot):
+	if attachedEnergy:
+		MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]Already attached an Energy![/center]",.75,)
+		await undesignateCard(card, playerSlot)
+		return
+	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/hand")
+	for n in hand.get_child_count():
+		hand.get_children()[n].darken()
+	cardTarget = await confirmTarget(playerSlot,["active","bench1","bench2","bench3","bench4","bench5"])
+	if cardTarget!=null:
+		card.reparent(cardTarget)
+		for n in cardTarget.get_child_count():
+			if n<5:#prefab children
+				continue
+			if(playerSlot==1):
+				cardTarget.get_children()[n].moveToLocation(card,cardTarget.global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n-4),-control.CARD_STACK_OFFSET*(n-4)*26),0.2,false)
+			else:
+				cardTarget.get_children()[n].moveToLocation(card,cardTarget.global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n-4),control.CARD_STACK_OFFSET*(n-4)*26),0.2,false)
+			attachedEnergy = true
+	canSelect = true
+	for n in hand.get_child_count():
+		hand.get_children()[n].lighten()
+func confirmTarget(playerSlot,acceptableContainers):
+	canSelect = false
+	var designated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
+	while designated.get_child_count()==1:
+		while (!targetConfirmed || control.hoveringCard == null)&&designated.get_child_count()==1:
+			await physicsProcess
+		targetConfirmed = false
+		if control.hoveringCard.get_parent().get_parent().name=="p"+str(playerSlot):
+			for n in acceptableContainers.size():
+				if acceptableContainers[n]==control.hoveringCard.get_parent().name:
+					return control.hoveringCard
+	return null
+func playStadium(card,playerSlot):
+	print("Play stadium")
+	revealPokemon(card)
+	if(get_node("/root/Control/3D_OBJECTS/table/stadium").get_child_count()>0):
+		var discard = get_node("/root/Control/3D_OBJECTS/table/p/stadium").get_children()[0].ownerOf.get_node("discard")
+		get_node("/root/Control/3D_OBJECTS/table/stadium").get_children()[0].reparent(discard)
+		for n in discard.get_child_count():
+			discard.get_children()[n].moveToLocation(discard.get_children()[n],get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/discard").global_position+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*n,0),0.2,false)
+	card.reparent(get_node("/root/Control/3D_OBJECTS/table/stadium"))
+	await card.moveToLocation(card,get_node("/root/Control/3D_OBJECTS/table/stadium").global_position,0.2,false)
+	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]No card effects exist.[/center]",.75,)
+func playTrainer(card,playerSlot):
+	print("Play trainer")
+	if card.cardDict.has("subtypes"):
+		if card.cardDict["subtypes"].has("Supporter"):
+			await playSupporter(card, playerSlot)
+			return
+		if card.cardDict["subtypes"].has("Stadium"):
+			await playStadium(card, playerSlot)
+			return
+	revealPokemon(card)
+	card.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/trainer"))
+	await card.moveToLocation(card,get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/trainer").global_position,0.2,false)
+	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]No card effects exist.[/center]",.75,)
+	discardArea(get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/trainer"),playerSlot)
+func playSupporter(card,playerSlot):
+	if usedSupporter:
+		MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]Already played a Supporter![/center]",.75,)
+		await undesignateCard(card, playerSlot)
+		return
+	usedSupporter = true
+	revealPokemon(card)
+	card.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/supporter"))
+	await card.moveToLocation(card,get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/supporter").global_position,0.2,false)
+	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]No card effects exist.[/center]",.75,)
+	discardArea(get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/supporter"),playerSlot)
+func playEvolution(card, playerSlot):
+	return
+func discardArea(container, playerSlot):
+	var discard = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/discard")
+	for n in container.get_child_count():
+		#concealPokemon(container.get_children()[n])
+		container.get_children()[n].reparent(discard)
+	for n in discard.get_child_count():
+		discard.get_children()[n].moveToLocation(discard.get_children()[n],get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/discard").global_position+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*n,0),0.2,false)
+############################################################
 func _on_mulligan_draw_pressed():
 	decideDraw = true
 	decideDrawSignal.emit()
 func _on_skip_draw_pressed():
 	decideDraw = false
 	decideDrawSignal.emit()
+func _on_mulligan_pressed():
+	mulliganDecision = 0
+func _on_keep_hand_pressed():
+	mulliganDecision = 1

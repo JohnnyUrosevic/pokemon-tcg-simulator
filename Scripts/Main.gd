@@ -15,9 +15,11 @@ var url = "https://api.pokemontcg.io/v2/cards/"+searchTarget
 var json_mate = load("res://Scripts/json_mate.gd")
 var png_mate = load("res://Scripts/png_mate.gd")
 var cardBack = load("res://Textures/cardBack.png")
+
 ##################Statemachine#####################
 var draww = 0
 var highlightedCard
+var hoveringCard
 ########################################################
 var gameScope = "table"
 var CARD_STACK_OFFSET = 0.35
@@ -137,7 +139,7 @@ func generateDeck(cardList,thisPlayerSlot):
 		card.scale = Vector3(1,1,1)
 		#card.global_position = deckLocation + Vector3(0,CARD_STACK_OFFSET*deckCount,0)
 		card.id = cardList[n]
-		card.playerSlot = thisPlayerSlot
+		#card.playerSlot = thisPlayerSlot
 		print(card.id+","+str(thisPlayerSlot))
 		card.initialize()
 		get_node("3D_OBJECTS/table/p"+thisPlayerSlot+"/deck").get_children().reverse()

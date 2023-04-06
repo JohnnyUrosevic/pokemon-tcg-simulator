@@ -485,7 +485,25 @@ surface_material_override/0 = SubResource("StandardMaterial3D_spkdl")
 [node name="table" type="Node3D" parent="3D_OBJECTS"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 0, 0)
 
+[node name="stadium" type="MeshInstance3D" parent="3D_OBJECTS/table"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -98.4228, 41.5702, -1.15636)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
+
+[node name="supporter" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -45.818, 41.9418, 37.729)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="designated" type="Node3D" parent="3D_OBJECTS/table/p1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 187.114)
@@ -541,12 +559,6 @@ mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
-[node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
 [node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
 transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 27.0331)
 mesh = ExtResource("1_3rg8g")
@@ -591,6 +603,12 @@ size = Vector2i(7680, 4320)
 
 [node name="p2" type="Node3D" parent="3D_OBJECTS/table"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="supporter" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -45.818, 41.9418, 37.729)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="designated" type="Node3D" parent="3D_OBJECTS/table/p2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 187.114)
