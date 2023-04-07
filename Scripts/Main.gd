@@ -17,7 +17,7 @@ var png_mate = load("res://Scripts/png_mate.gd")
 var cardBack = load("res://Textures/cardBack.png")
 
 ##################Statemachine#####################
-var draww = 0
+var draww = 0 #terrible name; how many functions are currently moving cards around. if 0, cards are static.
 var highlightedCard
 var hoveringCard
 ########################################################

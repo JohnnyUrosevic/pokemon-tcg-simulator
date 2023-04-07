@@ -1,9 +1,8 @@
-[gd_scene load_steps=49 format=3 uid="uid://bmt7h7yrf088g"]
+[gd_scene load_steps=43 format=3 uid="uid://bmt7h7yrf088g"]
 
 [ext_resource type="ArrayMesh" uid="uid://b4qq03lo0jrtw" path="res://3Dmodels/Classroom/Classroom.obj" id="1_0q5lh"]
 [ext_resource type="ArrayMesh" uid="uid://yd2s41kstiw5" path="res://3Dmodels/card.obj" id="1_3rg8g"]
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_yqjev"]
-[ext_resource type="Texture2D" uid="uid://hpp7dqbiid2t" path="res://Textures/sevsyxf2.bmp" id="2_2owcf"]
 [ext_resource type="Environment" uid="uid://chf2kw3vw684i" path="res://Scenes/environment.tres" id="2_cukcg"]
 [ext_resource type="Script" path="res://Scripts/turn_system.gd" id="2_kmohx"]
 [ext_resource type="Texture2D" uid="uid://bt34nvy7rfuhv" path="res://3Dmodels/Classroom/1B930A63_edit.png" id="2_vt1s7"]
@@ -24,15 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://dxv4pa3toypi8" path="res://Textures/messageBar.png" id="10_p0dyy"]
 [ext_resource type="ArrayMesh" uid="uid://cnsus7r2n550j" path="res://3Dmodels/plane.obj" id="11_wg00g"]
 [ext_resource type="Texture2D" uid="uid://brjhi8g521cg7" path="res://3Dmodels/Classroom/board.png" id="12_k2tnx"]
-[ext_resource type="Texture2D" uid="uid://bau2fj0mcbn0v" path="res://Textures/map_03-07-22_300dpi_17.32x13.20_INV3576c-scaled.png" id="17_gt87r"]
-[ext_resource type="Texture2D" uid="uid://di8r7pvw24rlx" path="res://Textures/8.30.2022_B5.jpg" id="18_orxst"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pti0s"]
-blend_mode = 2
-
-[sub_resource type="Theme" id="Theme_qhqhd"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_7pds3"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tbta4"]
 viewport_path = NodePath("3D_OBJECTS/table/p1/SubViewport")
@@ -151,56 +141,46 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2_kmohx")
 
-[node name="UI_map" type="CanvasLayer" parent="."]
-visible = false
-follow_viewport_enabled = true
-
-[node name="close" type="Button" parent="UI_map"]
-texture_filter = 1
-texture_repeat = 2
-material = SubResource("CanvasItemMaterial_pti0s")
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1117.0
-offset_top = -638.0
-offset_right = -1003.0
-offset_bottom = -607.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(2, 2)
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-theme = SubResource("Theme_qhqhd")
-text = "Close Map"
-icon = SubResource("ViewportTexture_7pds3")
-flat = true
-text_overrun_behavior = 2
-icon_alignment = 2
-
-[node name="Sevsyxf2" type="Sprite2D" parent="UI_map/close"]
-texture_filter = 2
-texture_repeat = 1
-position = Vector2(56, 15.5928)
-scale = Vector2(0.136043, 0.139175)
-texture = ExtResource("2_2owcf")
-
-[node name="Map03-07-22300Dpi1732x1320Inv3576c-scaled" type="Sprite2D" parent="UI_map"]
-position = Vector2(723.559, 326.063)
-scale = Vector2(0.334123, 0.334124)
-texture = ExtResource("17_gt87r")
-
-[node name="8302022B5" type="Sprite2D" parent="UI_map"]
-z_index = -1
-position = Vector2(150, 323.5)
-scale = Vector2(0.81125, 0.81125)
-texture = ExtResource("18_orxst")
-
 [node name="UI_table" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
+
+[node name="messages" type="Node2D" parent="UI_table"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0, -200)
+
+[node name="messageBar" type="Sprite2D" parent="UI_table/messages"]
+modulate = Color(1, 1, 1, 0.384314)
+position = Vector2(480, 316)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="messageBar" type="Sprite2D" parent="UI_table/messages/messageBar"]
+modulate = Color(1, 1, 1, 0.698039)
+position = Vector2(-1.00002, 26)
+scale = Vector2(1.00104, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="messageBar2" type="Sprite2D" parent="UI_table/messages/messageBar"]
+modulate = Color(1, 1, 1, 0.698039)
+position = Vector2(-1.00002, 26)
+scale = Vector2(1.00104, 0.5)
+texture = ExtResource("10_p0dyy")
+
+[node name="message" type="RichTextLabel" parent="UI_table/messages"]
+offset_left = 3.0
+offset_top = 319.0
+offset_right = 2378.0
+offset_bottom = 426.0
+scale = Vector2(0.4, 0.4)
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 18
+theme_override_constants/outline_size = 28
+theme_override_font_sizes/normal_font_size = 78
+bbcode_enabled = true
+text = "[center]sdfsdfsdfsdf[/center]"
+scroll_active = false
 
 [node name="BG" type="Sprite2D" parent="UI_table"]
 visible = false
@@ -215,6 +195,72 @@ texture = SubResource("ViewportTexture_tbta4")
 position = Vector2(127.25, 368.781)
 scale = Vector2(0.389167, 0.389167)
 texture = ExtResource("6_ox876")
+
+[node name="move1Big" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -607.0
+offset_top = -579.0
+offset_right = 949.0
+offset_bottom = -471.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Move1"
+icon_alignment = 2
+
+[node name="move1" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -607.0
+offset_top = -579.0
+offset_right = 156.0
+offset_bottom = -471.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Move1"
+icon_alignment = 2
+
+[node name="move2" type="Button" parent="UI_table"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -408.0
+offset_top = -579.0
+offset_right = 355.0
+offset_bottom = -471.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.346)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme = ExtResource("6_oks16")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 39
+text = "Move2"
+icon_alignment = 2
 
 [node name="skipDraw" type="Button" parent="UI_table"]
 anchors_preset = 3
@@ -359,44 +405,6 @@ position = Vector2(480, 270)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_snf7w")
 
-[node name="messages" type="Node2D" parent="UI_table"]
-visible = false
-modulate = Color(1, 1, 1, 0)
-position = Vector2(0, -17)
-
-[node name="messageBar" type="Sprite2D" parent="UI_table/messages"]
-modulate = Color(1, 1, 1, 0.45098)
-position = Vector2(480, 316)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("10_p0dyy")
-
-[node name="messageBar" type="Sprite2D" parent="UI_table/messages/messageBar"]
-modulate = Color(1, 1, 1, 0.698039)
-position = Vector2(-1.00002, 26)
-scale = Vector2(1.00104, 0.5)
-texture = ExtResource("10_p0dyy")
-
-[node name="messageBar2" type="Sprite2D" parent="UI_table/messages/messageBar"]
-modulate = Color(1, 1, 1, 0.698039)
-position = Vector2(-1.00002, 26)
-scale = Vector2(1.00104, 0.5)
-texture = ExtResource("10_p0dyy")
-
-[node name="message" type="RichTextLabel" parent="UI_table/messages"]
-offset_left = 3.0
-offset_top = 319.0
-offset_right = 2378.0
-offset_bottom = 426.0
-scale = Vector2(0.4, 0.4)
-theme = ExtResource("6_oks16")
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/line_separation = 18
-theme_override_constants/outline_size = 28
-theme_override_font_sizes/normal_font_size = 78
-bbcode_enabled = true
-text = "[center]sdfsdfsdfsdf[/center]"
-scroll_active = false
-
 [node name="turnLabel" type="RichTextLabel" parent="UI_table"]
 offset_left = 202.0
 offset_top = 3.0
@@ -494,19 +502,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 [node name="p1" type="Node3D" parent="3D_OBJECTS/table"]
 
 [node name="supporter" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -45.818, 41.9418, 37.729)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 22.3747, 41.9418, 76.729)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -31.0171, 41.5702, 38.6048)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="designated" type="Node3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 187.114)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 71.337, 201.114)
 
 [node name="hand" type="Node3D" parent="3D_OBJECTS/table/p1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.897, 222.571)
@@ -560,37 +568,37 @@ skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 27.0331)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 27.0331)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize2" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 93.4528)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 93.4528)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize3" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 159.187)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 159.187)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize4" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 34.4562)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 34.4562)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize5" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 100.876)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 100.876)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="prize6" type="MeshInstance3D" parent="3D_OBJECTS/table/p1"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 166.61)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 166.61)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
@@ -605,7 +613,7 @@ size = Vector2i(7680, 4320)
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="supporter" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -45.818, 41.9418, 37.729)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 30.9187, 41.9418, 74.7289)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
@@ -665,49 +673,49 @@ skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="active" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, 6.7901, 41.5702, 38.6048)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 27.0331)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize2" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 93.4528)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize3" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 54.4651, 159.187)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize4" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 34.4562)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize5" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 100.876)
-mesh = ExtResource("1_3rg8g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
-
-[node name="prize6" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
-transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 47.4121, 166.61)
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -23.4732, 41.5702, 38.6048)
 mesh = ExtResource("1_3rg8g")
 skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="Camera3Dp2" type="Camera3D" parent="3D_OBJECTS/table/p2"]
 transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 205.936, 320.544)
+
+[node name="prize1" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 27.0331)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize2" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 93.4528)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize3" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -151.992, 42.9214, 159.187)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize4" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 34.4562)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize5" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 100.876)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
+
+[node name="prize6" type="MeshInstance3D" parent="3D_OBJECTS/table/p2"]
+transform = Transform3D(9, 0, 0, 0, 9, 0, 0, 0, 9, -171.529, 42.4531, 166.61)
+mesh = ExtResource("1_3rg8g")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_egpop")
 
 [node name="Plane" type="MeshInstance3D" parent="3D_OBJECTS/table"]
 transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 40.5951, 0)

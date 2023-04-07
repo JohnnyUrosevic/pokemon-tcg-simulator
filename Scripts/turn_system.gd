@@ -119,7 +119,7 @@ func initializeMatch():
 	var hand = get_node("/root/Control/3D_OBJECTS/table/p1/hand")
 	for n in hand.get_child_count():
 		hand.get_children()[n].lighten()
-	await distributePrizeCards()
+	await distributePrizeCards(1)
 	await drawForOpponentMulligans()
 	await MessageMate.displayMessage(get_node("/root/Control/UI_table/messages"),"[center]Battle Start![/center]",1,)
 	revealAllPokemon()
@@ -171,6 +171,7 @@ func gamePlay():
 			await drawCardsFrom("deck",1)
 			while(!attacked):
 				await playCards(1)
+			hideAttackButtons()
 			await turnEnd #called when an action that would end the turn is taken
 		else:
 			canSelect = false
@@ -219,8 +220,12 @@ func passTurn():
 	usedSupporter = false
 	attachedEnergy = false
 	attacked = false
-func distributePrizeCards():
-	pass
+func distributePrizeCards(playerSlot):
+	for n in 6:
+		var deck = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/deck")
+		var cardToDraw = deck.get_children()[0]
+		cardToDraw.reparent(get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/prize"+str(n+1)))
+		await cardToDraw.moveToLocation(cardToDraw,cardToDraw.get_parent().global_position,0.2,false)
 func basicPokemonCheck(playerSlot): #called at the beginning of a match after draw to determine mulligans
 	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/hand")
 	var hasBasicPokemon = false
@@ -284,9 +289,9 @@ func alignHand(playerSlot):
 			hand.get_children()[n].revealed = false
 		else:
 			await hand.get_children()[n].moveToLocation(hand.get_children()[n],targetLoc,.2,false)
-	get_node("/root/Control").draww -=1
 	for n in hand.get_child_count():
 		hand.get_children()[n].handPosition = hand.get_children()[n].global_position
+	get_node("/root/Control").draww -=1
 func alignDesignated(playerSlot):
 	get_node("/root/Control").draww +=1
 	var designated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
@@ -306,16 +311,28 @@ func alignDeck(playerSlot):
 			deck.get_children()[n].revealed = false
 		else:
 			await deck.get_children()[n].moveToLocation(deck.get_children()[n],targetLoc,.2,false)
-func alignPokemon(container,playerSlot):
+func alignPokemon(container,playerSlot):#called by Card.gd
 	var alignTarget = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/"+container)
 	for n in alignTarget.get_child_count():
 		var targetLoc =  alignTarget.global_position+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*(5+n*5),0)
 		if n!=alignTarget.get_child_count()-1:
 			alignTarget.get_children()[n].moveToLocation(alignTarget.get_children()[n],targetLoc,.2,false)
-			if(turn>0):
-				alignTarget.get_children()[n].revaled = true
 		else:
 			await alignTarget.get_children()[n].moveToLocation(alignTarget.get_children()[n],targetLoc,.2,false)
+		if(turn>0):
+			revealPokemon(alignTarget.get_children()[n])
+func alignEnergy(container, playerSlot):
+	var alignTarget = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/"+container.name)
+	for n in alignTarget.get_child_count():
+		var targetLoc
+		if(playerSlot==1):
+			targetLoc =  alignTarget.get_children()[0].global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n),-control.CARD_STACK_OFFSET*(n+1)*26)
+		else:
+			targetLoc =  alignTarget.get_children()[0].global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n),control.CARD_STACK_OFFSET*(n+1)*26)
+		if n!=alignTarget.get_child_count()-1:
+			alignTarget.get_children()[0].get_children()[n+5].moveToLocation(alignTarget.get_children()[0].get_children()[n+5],targetLoc,.2,false)
+		else:
+			await alignTarget.get_children()[0].get_children()[n+5].moveToLocation(alignTarget.get_children()[0].get_children()[n+5],targetLoc,.2,false)
 func returnToDeck(card, playerSlot): #takes a card from anywhere and returns it to the deck
 	var deck = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/deck")
 	var material = StandardMaterial3D.new()
@@ -359,8 +376,31 @@ func getInPlayPokemon():
 		inPlayPokemon+=(get_node("/root/Control/3D_OBJECTS/table/p"+str(n)+"/active").get_children())
 		n+=1
 	return inPlayPokemon
+func getActivePokemon(playerSlot):
+	return get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/active").get_children()[get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/active").get_child_count()-1]
 ####################PLAYING CARDS###########################
+func showAttackButtons():
+	var active = getActivePokemon(1)
+	if !active.cardDict.has("attacks"):#no attacks
+		return
+	if active.cardDict["attacks"].size()==2:#2 attacks:
+		GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/move1"),Vector2(353,12),0.2,false)
+		GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/move2"),Vector2(552,12),0.2,false)
+	else:#1 attack
+		GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/move1Big"),Vector2(353,12),0.2,false)
+	updateAttackText(active)
+func hideAttackButtons():
+	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/move1"),Vector2(353,-39),0.2,false)
+	GeneralMate.moveToLocation2D(get_node("/root/Control/UI_table/move2"),Vector2(552,-39),0.2,false)
+func updateAttackText(active):
+	if active.cardDict["attacks"].size()==2:#2 attacks:
+		get_node("/root/Control/UI_table/move1").text = active.cardDict["attacks"][0]["name"]
+		get_node("/root/Control/UI_table/move2").text = active.cardDict["attacks"][1]["name"]
+	else:#1 attack
+		get_node("/root/Control/UI_table/move1Big").text = active.cardDict["attacks"][0]["name"]
+		print("set text to"+active.cardDict["attacks"][0]["name"])
 func playCards(playerSlot):
+	showAttackButtons()
 	var designated = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
 	var hand = get_node("/root/Control/3D_OBJECTS/table/p"+str(playerSlot)+"/designated")
 	while(!clicked||designated.get_child_count()==0):
@@ -398,15 +438,10 @@ func playEnergy(card,playerSlot):
 		hand.get_children()[n].darken()
 	cardTarget = await confirmTarget(playerSlot,["active","bench1","bench2","bench3","bench4","bench5"])
 	if cardTarget!=null:
+		revealPokemon(card)
 		card.reparent(cardTarget)
-		for n in cardTarget.get_child_count():
-			if n<5:#prefab children
-				continue
-			if(playerSlot==1):
-				cardTarget.get_children()[n].moveToLocation(card,cardTarget.global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n-4),-control.CARD_STACK_OFFSET*(n-4)*26),0.2,false)
-			else:
-				cardTarget.get_children()[n].moveToLocation(card,cardTarget.global_position+Vector3(0,-control.CARD_STACK_OFFSET*(n-4),control.CARD_STACK_OFFSET*(n-4)*26),0.2,false)
-			attachedEnergy = true
+		alignEnergy(cardTarget.get_parent(),playerSlot)
+		attachedEnergy = true
 	canSelect = true
 	for n in hand.get_child_count():
 		hand.get_children()[n].lighten()

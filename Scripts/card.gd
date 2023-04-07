@@ -34,7 +34,15 @@ func _physics_process(delta):
 	if get_node("/root/Control").highlightedCard != self && hovering:
 		hovering = false
 		if get_parent().name=="hand":
-			moveToLocation(self,handPosition+Vector3(0,0,0),.2,true)
+			moveToLocation(self,newHandPosition()+Vector3(0,0,0),.1,true)
+func newHandPosition():
+	if get_parent().name!="hand":
+		return
+	
+	for n in get_parent().get_child_count():
+		var targetLoc = get_parent().global_position-get_parent().basis.x*16*get_parent().get_child_count()+get_parent().basis.x*32*n+get_parent().basis.x*24+Vector3(0,get_node("/root/Control").CARD_STACK_OFFSET*n*3,0)+Vector3(-38,0,0)
+		if get_parent().get_children()[n]==self:
+			return targetLoc	
 func initialize():
 	if(!json_mate.jsonExists(id)):
 		$cardRequest.request("https://api.pokemontcg.io/v2/cards/"+id,['X-Api-Key: ' + API.KEY]);
@@ -68,9 +76,9 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 			get_node("/root/Control/TurnSystem").undesignateCard(self,1)
 			await get_node("/root/Control/TurnSystem").alignDesignated(1)
 	#CHANGE PICTURE###############
-	if get_parent().name!="deck" && get_owner_name()==str(1):
+	if get_parent().name!="deck" && get_parent().name.substr(0,5)!="prize" && get_owner_name()==str(1):
 		get_node("/root/Control/UI_table/info").texture = bigTexture
-	elif get_parent().name!="deck" && get_owner_name()==str(2):
+	elif get_parent().name!="deck" && get_parent().name.substr(0,5)!="prize" && get_owner_name()==str(2):
 		if revealed:
 			get_node("/root/Control/UI_table/info").texture = bigTexture
 		else:
@@ -80,7 +88,7 @@ func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
 			get_node("/root/Control/UI_table/info").texture = bigTexture
 		else:
 			get_node("/root/Control/UI_table/info").texture = load ("res://Textures/smallerBack.png")
-	#HOVER CARD##################
+	#HOVER Highlight CARD##################
 	if get_parent().name=="hand" && !hovering && get_node("/root/Control/TurnSystem").canSelect && get_owner_name()==str(1):
 		#await physicsProcess
 		hoverHighlight()
@@ -136,16 +144,14 @@ func updateTexture():
 	material.no_depth_test = false
 	set_surface_override_material(0,material)
 func hoverHighlight():
-	if darkedOut || get_node("/root/Control").highlightedCard == self:
-		return
-	if get_node("/root/Control").draww>0:
-		print("draww was true || overridden")
+	if darkedOut || get_node("/root/Control").highlightedCard == self || get_node("/root/Control").draww>0:
 		return
 	if !hovering:
-		moveToLocation(self,handPosition+Vector3(0,0,-11),.2,true)
+		moveToLocation(self,newHandPosition()+Vector3(0,0,-11),.1,true)
 	hovering = true
 	get_node("/root/Control").highlightedCard = self
 func moveToLocation(obj, location, travelTime, finish):
+	get_node("/root/Control").draww +=1
 	cancelMove = true
 	await physicsProcess
 	cancelMove = false
@@ -162,6 +168,7 @@ func moveToLocation(obj, location, travelTime, finish):
 	cancelMove = false
 	if finish:
 		obj.global_position=location
+	get_node("/root/Control").draww -=1
 func get_owner_name():
 	return get_parent().get_parent().name.substr(1,-1)
 #######################
