@@ -1,15 +1,18 @@
-[gd_scene load_steps=26 format=3 uid="uid://cce14l8qu55gs"]
+[gd_scene load_steps=31 format=3 uid="uid://cce14l8qu55gs"]
 
 [ext_resource type="Script" path="res://Scripts/mainMenu.gd" id="1_5ocp1"]
 [ext_resource type="Texture2D" uid="uid://d0raqlu0vu6pq" path="res://Textures/frontOak.png" id="1_uyn6b"]
 [ext_resource type="Texture2D" uid="uid://g4hogs7f0irg" path="res://Textures/faces/Oak/oak.png" id="2_ueq1b"]
 [ext_resource type="Texture2D" uid="uid://dk2n3m6x1p3wn" path="res://Textures/faces/Oak/eyes1-Sheet-export.png" id="3_kb4xn"]
 [ext_resource type="Script" path="res://Scripts/OakCharacter.gd" id="3_oobd2"]
+[ext_resource type="AudioStream" uid="uid://oosudgnj4cbs" path="res://SFX/select.mp3" id="4_fopl7"]
 [ext_resource type="Texture2D" uid="uid://bw12l2yhtbg4m" path="res://Textures/onlineMenus.png" id="5_lsjtw"]
 [ext_resource type="Theme" uid="uid://blk8n50qhm4w5" path="res://Textures/textstyle.tres" id="6_fs7r5"]
 [ext_resource type="Texture2D" uid="uid://8i0nk6at2q64" path="res://Textures/faces/Oak/oak-Sheet-mouth-export.png" id="7_vjg0j"]
 [ext_resource type="Script" path="res://Scripts/nonButton.gd" id="8_uitqs"]
 [ext_resource type="Texture2D" uid="uid://dvhi31nyt1rl1" path="res://Textures/messageBar2.png" id="9_ljapk"]
+[ext_resource type="Texture2D" uid="uid://bkbi88gbqrxy1" path="res://Textures/grcyroe5.png" id="11_caiqj"]
+[ext_resource type="AudioStream" uid="uid://c83uqouy75s3s" path="res://Music/08 Kid's Club.mp3" id="12_j8iiv"]
 
 [sub_resource type="Gradient" id="Gradient_rgnky"]
 offsets = PackedFloat32Array(0.079602, 0.139303, 1)
@@ -17,6 +20,12 @@ colors = PackedColorArray(0, 0, 0, 1, 0.950249, 0.950249, 0.950249, 0.0497512, 1
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_gf41k"]
 gradient = SubResource("Gradient_rgnky")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vds8t"]
+size = Vector2(20.8171, 100.879)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lfygx"]
+size = Vector2(150, 150)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_er3f6"]
 
@@ -151,10 +160,12 @@ _data = {
 size = Vector2(153.966, 49.1181)
 
 [node name="Node2D" type="Node2D"]
+scale = Vector2(1.00132, 1)
 script = ExtResource("1_5ocp1")
 
 [node name="BottomBar" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.745098)
+z_index = -3
 texture_filter = 1
 position = Vector2(479.991, 397.688)
 rotation = -1.5708
@@ -163,18 +174,78 @@ texture = SubResource("GradientTexture2D_gf41k")
 
 [node name="BottomBar2" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.745098)
+z_index = -3
 texture_filter = 1
 position = Vector2(479.991, 144)
 rotation = 1.5708
 scale = Vector2(4.52473, 15.0224)
 texture = SubResource("GradientTexture2D_gf41k")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="VSlider" type="VSlider" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+z_index = -1
+custom_minimum_size = Vector2(0, 200)
+offset_left = 935.765
+offset_top = 297.0
+offset_right = 951.765
+offset_bottom = 497.0
+mouse_filter = 1
+max_value = 104.0
+value = 33.0
+
+[node name="Sprite2D" type="Sprite2D" parent="VSlider"]
+script = ExtResource("8_uitqs")
+
+[node name="Area2D" type="Area2D" parent="VSlider/Sprite2D"]
+input_pickable = false
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VSlider/Sprite2D/Area2D"]
+z_index = 999
+position = Vector2(7.12231, 99.4209)
+scale = Vector2(2.656, 2.656)
+shape = SubResource("RectangleShape2D_vds8t")
+debug_color = Color(0.866667, 0, 0.854902, 0.419608)
+
+[node name="volumeButton" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(943.758, 523.999)
+rotation = -1.5708
+scale = Vector2(0.0505959, 0.0505959)
+texture = ExtResource("11_caiqj")
+script = ExtResource("8_uitqs")
+
+[node name="Grcyroe6" type="Sprite2D" parent="volumeButton"]
+modulate = Color(0, 0, 0, 0.34902)
+show_behind_parent = true
+z_index = -2
+position = Vector2(-19.7383, -19.7637)
+texture = ExtResource("11_caiqj")
+
+[node name="Area2D" type="Area2D" parent="volumeButton"]
+visibility_layer = 2
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="volumeButton/Area2D"]
+visibility_layer = 2
+z_index = 999
+scale = Vector2(2.656, 2.656)
+shape = SubResource("RectangleShape2D_lfygx")
+debug_color = Color(0.866667, 0, 0.854902, 0.419608)
+metadata/_edit_lock_ = true
+
+[node name="select" type="AudioStreamPlayer2D" parent="volumeButton"]
+stream = ExtResource("4_fopl7")
+volume_db = -13.88
+pitch_scale = 1.09
+attenuation = 4.0
+
+[node name="Header" type="Node2D" parent="."]
 position = Vector2(537, 7)
 scale = Vector2(0.943, 1)
 skew = 0.260054
 
-[node name="txt" type="RichTextLabel" parent="Node2D"]
+[node name="txt" type="RichTextLabel" parent="Header"]
 offset_left = -553.689
 offset_top = -8.27835
 offset_right = 146.311
@@ -195,7 +266,7 @@ fit_content = true
 scroll_active = false
 metadata/_edit_use_anchors_ = true
 
-[node name="txt2" type="RichTextLabel" parent="Node2D"]
+[node name="txt2" type="RichTextLabel" parent="Header"]
 anchors_preset = -1
 anchor_left = 0.207551
 anchor_top = 0.309048
@@ -259,7 +330,6 @@ libraries = {
 
 [node name="Mouth" type="Sprite2D" parent="Oak"]
 position = Vector2(0, 1.66946)
-scale = Vector2(1, 1)
 texture = ExtResource("7_vjg0j")
 hframes = 4
 
@@ -334,6 +404,12 @@ shape = SubResource("RectangleShape2D_joiew")
 debug_color = Color(0.866667, 0, 0.854902, 0.419608)
 metadata/_edit_lock_ = true
 
+[node name="select" type="AudioStreamPlayer2D" parent="casual"]
+stream = ExtResource("4_fopl7")
+volume_db = -10.0
+pitch_scale = 0.9
+attenuation = 8.87655
+
 [node name="ranked" type="Sprite2D" parent="."]
 position = Vector2(747.071, 234.875)
 scale = Vector2(2.11735, 2.11735)
@@ -385,6 +461,12 @@ shape = SubResource("RectangleShape2D_joiew")
 debug_color = Color(0.866667, 0, 0.854902, 0.419608)
 metadata/_edit_lock_ = true
 
+[node name="select" type="AudioStreamPlayer2D" parent="ranked"]
+stream = ExtResource("4_fopl7")
+volume_db = -10.0
+pitch_scale = 0.7
+attenuation = 8.87655
+
 [node name="friend" type="Sprite2D" parent="."]
 position = Vector2(731.036, 352.125)
 scale = Vector2(2.11735, 2.11735)
@@ -435,10 +517,16 @@ shape = SubResource("RectangleShape2D_joiew")
 debug_color = Color(0.866667, 0, 0.854902, 0.419608)
 metadata/_edit_lock_ = true
 
+[node name="select" type="AudioStreamPlayer2D" parent="friend"]
+stream = ExtResource("4_fopl7")
+volume_db = -10.0
+pitch_scale = 0.5
+attenuation = 8.87655
+
 [node name="messages" type="Node2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0)
-position = Vector2(-6.10352e-05, -43)
+position = Vector2(-13.9815, -43)
 
 [node name="messageBar" type="Sprite2D" parent="messages"]
 position = Vector2(480, 316)
@@ -463,11 +551,19 @@ scroll_active = false
 
 [node name="black" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(479, 31.657)
+position = Vector2(479, 27.0062)
 rotation = -1.5708
 scale = Vector2(16.9961, 16.5776)
 texture = SubResource("GradientTexture2D_yd5ow")
 
+[node name="bgm" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_j8iiv")
+
+[connection signal="mouse_entered" from="VSlider/Sprite2D/Area2D" to="VSlider" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="VSlider/Sprite2D/Area2D" to="VSlider" method="_on_area_2d_mouse_exited"]
+[connection signal="input_event" from="volumeButton/Area2D" to="volumeButton" method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="volumeButton/Area2D" to="volumeButton" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="volumeButton/Area2D" to="volumeButton" method="_on_area_2d_mouse_exited"]
 [connection signal="input_event" from="casual/Area2D" to="casual" method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="casual/Area2D" to="casual" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="casual/Area2D" to="casual" method="_on_area_2d_mouse_exited"]

@@ -4,6 +4,7 @@ signal physicsProcess
 
 var objectsMoving = []
 var objectsScaling = []
+var objectsOpac = []
 func _physics_process(delta):
 	physicsProcess.emit()
 
@@ -34,13 +35,37 @@ func checkDupe(objs,obj):
 	return false
 		
 
+func continuousOpac(obj, opacity, travelTime, finish):
+	objectsOpac.append(obj)
+	await physicsProcess
+	var distance = opacity-obj.self_modulate.a
+	var ogDistance = abs(distance)
+	var time = 0
+	var opac = obj.self_modulate.a
+	var original = opac
+	print(opac)
+	while time < travelTime && !checkDupe(objectsOpac,obj):
+		distance = opacity-obj.self_modulate.a
+		if opacity<original:
+			opac -= (1.0/144)*ogDistance/travelTime
+		elif opacity>original:
+			opac += (1.0/144)*ogDistance/travelTime
+		time+=1.0/144
+		obj.self_modulate = Color(1,1,1,opac)
+		#print (str(time))
+		await physicsProcess
+	if finish:
+		obj.self_modulate = Color(1,1,1,opacity)
+	objectsOpac.erase(obj)
+
+
 func continuousScale2D(obj, newScale, travelTime, finish):
 	objectsScaling.append(obj)
 	await physicsProcess
 	var distance = (newScale-obj.global_scale).length()
 	var ogDistance = distance
 	var time = 0
-	while time < travelTime && objectsScaling.count(obj)<=1:
+	while time < travelTime && !checkDupe(objectsScaling,obj):
 		distance = (newScale-obj.global_scale).length()
 		if newScale.length()<obj.global_scale.length():
 			obj.global_scale -= Vector2(1,1)*(1.0/144)*ogDistance/travelTime

@@ -49,6 +49,7 @@ func updateMessage(obj,msg):
 			obj.modulate = Color(1,1,1,timer)
 		obj.get_node("message").visible_ratio = timer/6
 		await physicsProcess
+	messagesBeingDisplayed.erase(self)
 
 func hideMessage(obj):
 	messagesBeingDisplayed.clear()
